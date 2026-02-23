@@ -72,6 +72,11 @@ const sendAvailableNames = () => {
     sendAvailableNames();
 
     socket.on('join', (name) => {
+    // Achte darauf, dass hier auch bingoData steht!
+let combinedPool = [
+    ...bingoData["Allgemein"], 
+    ...bingoData[name]
+];
         // ... dein bisheriger Code zum Erstellen des Spielers ...
         players[socket.id] = { username: name, color: COLORS[Object.keys(players).length] };
         
