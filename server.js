@@ -23,8 +23,8 @@ const bingoData = {
     ],
     "Shockwave": ["unbekanntes Wort", "Begriff A2", "Begriff A3",
                   "Begriff A4", "Begriff A5", "Begriff A6"],
-    "Schocki": ["Hiiiilfeee", "Wowi", "Coolio", 
-                "pick WR", "Forcestaff Mobbing", "Klaut Lasthit", "Weini, Weini", "Lasthitlilly"],
+    "Schoki": ["Hiiiilfeee", "Wowi", "Coolio", 
+                "pick WR", "Forcestaff Mobbing", "Klaut Lasthit", "Weini, Weini", "Lasthitlilly", "Mmmmh Mmmmh Mmmmh"],
     "Jerrylarry": ["I blame Klausi"", "Lob an Schocki", "miau",
                    "Klausi Alarm", "spielt Rolli Boy", "Hamdulilla", "Klausiiii"],
     "Nobody": ["Ich kann nicht mehr", "ey Leude", "picked Techies",
@@ -32,8 +32,8 @@ const bingoData = {
     "Brezel": ["Was soll ich bauen", "Neiiiin", "meeeh hab Angst", 
                "ist verwirrt", "Begriff B5", "Begriff B6"],
     "Barid": ["spielt Rubick", "Ausraster", "was ist das für ne Scheiße", 
-              "Begriff C4", "Begriff C5", "Begriff C6"],
-    "Dome": ["AFK in Pick", "Begriff D2", "Begriff D3", 
+              "lass mal dagon bauen", "erzählt von kacke", "besoffen", "traurig weil kein Rubick"],
+    "Dome": ["AFK in Pickphase", "Begriff D2", "Begriff D3", 
              "Begriff D4", "Begriff D5", "Begriff D6"]
 };
 
