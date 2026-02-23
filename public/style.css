@@ -1,6 +1,6 @@
 /* Haupt-Hintergrund mit einem Dota-Wallpaper */
 body { 
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+    font-family: 'Cinzel', serif; 
     background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), 
                 url('https://cdn.cloudflare.steamstatic.com/apps/dota2/images/dota_react/blog/archive/spring2021_bg.jpg');
     background-size: cover;
@@ -129,6 +129,17 @@ input {
     font-size: 0.9rem;
     box-shadow: 2px 2px 5px rgba(0,0,0,0.3);
     border: 1px solid rgba(255,255,255,0.2);
+}
+
+/* Das sorgt dafür, dass Grid und Sidebar nebeneinander stehen */
+.game-container {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 20px;
+    width: 100%;
+    max-width: 900px;
+    flex-wrap: wrap; /* Wichtig für Handys: Sidebar rutscht unter das Feld */
 }
 
 /* Die Sidebar während des Spiels */
