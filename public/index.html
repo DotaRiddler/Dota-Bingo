@@ -14,9 +14,17 @@
     </div>
 
     <div id="game" style="display:none;">
-        <h2 id="welcomeMsg"></h2>
+    <h2 id="welcomeMsg"></h2>
+    
+    <div class="game-container">
         <div id="bingoGrid"></div>
+
+        <div id="activePlayersSidebar">
+            <h3>Mitspieler</h3>
+            <div id="activePlayerList"></div>
+        </div>
     </div>
+</div>
 
     <script src="/socket.io/socket.io.js"></script>
     <script src="script.js"></script>
