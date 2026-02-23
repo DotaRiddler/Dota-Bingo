@@ -138,7 +138,7 @@ function renderBingoField() {
         cell.innerText = item.text;
         // Markierung setzen, falls bereits geklickt (für Reconnects nützlich)
         if(item.clicked) cell.classList.add('marked');
-   ]     
+        
         cell.onclick = () => toggleCell(index, cell);
         gridElement.appendChild(cell);
     });
