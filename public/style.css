@@ -62,19 +62,36 @@ input {
     width: 200px;
 }
 
-/* Bingo-Zellen veredeln */
+/* Das Herzstück: Das 5x5 Raster */
+#bingoGrid { 
+    display: grid; 
+    grid-template-columns: repeat(5, 1fr); /* GENAU 5 Spalten */
+    grid-template-rows: repeat(5, 1fr);    /* GENAU 5 Zeilen */
+    gap: 8px; 
+    width: 100%;
+    max-width: 600px; /* Damit es auf großen Bildschirmen nicht zu riesig wird */
+    margin: 20px auto; 
+    aspect-ratio: 1 / 1; /* Hält das Feld quadratisch */
+}
+
+/* Die einzelnen Felder */
 .cell { 
-    aspect-ratio: 1; 
-    border: 1px solid rgba(255,255,255,0.1); 
+    background: rgba(40, 40, 40, 0.9);
+    border: 1px solid rgba(255, 255, 255, 0.1); 
     display: flex; 
     align-items: center; 
     justify-content: center; 
+    text-align: center;
     cursor: pointer; 
-    padding: 8px;
-    font-size: 0.85rem;
+    padding: 10px;
+    font-size: clamp(0.6rem, 2vw, 0.9rem); /* Schriftgröße passt sich dem Bildschirm an */
+    font-family: 'Cinzel', serif;
     font-weight: bold;
+    color: white;
     text-shadow: 1px 1px 2px black;
     transition: all 0.2s;
+    word-wrap: break-word; /* Bricht lange Wörter um */
+    overflow: hidden;
 }
 
 .cell:hover {
@@ -82,6 +99,25 @@ input {
     outline: 2px solid gold;
     z-index: 10;
 }
+
+/* Markierte Felder */
+.marked { 
+    opacity: 0.5; 
+    background-color: #222 !important; /* Dunkelt das Feld ab */
+    text-decoration: line-through; 
+    border: 2px solid #a42323; 
+    position: relative;
+}
+
+/* Ein X über das Feld legen, wenn markiert */
+.marked::after {
+    content: "X";
+    position: absolute;
+    color: rgba(164, 35, 35, 0.8);
+    font-size: 3rem;
+    font-family: Arial, sans-serif;
+}
+
 /* Styling für die Spielernamen-Schilder */
 .player-tag {
     display: inline-block;
