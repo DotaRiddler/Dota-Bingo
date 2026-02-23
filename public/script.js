@@ -47,8 +47,25 @@ socket.on('initGame', (data) => {
     document.getElementById('game').style.display = "block";
     document.getElementById('welcomeMsg').innerText = `Viel Glück, ${myUsername}!`;
     
+    // Spielerliste in der Sidebar anzeigen
+    updateActiveSidebar();
+    
     generateBingoField();
 });
+
+// Neue Funktion für die Seitenleiste
+function updateActiveSidebar() {
+    const sidebarList = document.getElementById('activePlayerList');
+    sidebarList.innerHTML = "";
+    
+    allPlayers.forEach(p => {
+        const span = document.createElement('span');
+        span.innerText = p.username;
+        span.className = "player-tag";
+        span.style.backgroundColor = p.color;
+        sidebarList.appendChild(span);
+    });
+}
 
 function generateBingoField() {
     const gridElement = document.getElementById('bingoGrid');
