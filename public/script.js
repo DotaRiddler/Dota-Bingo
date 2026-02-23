@@ -1,4 +1,5 @@
 const socket = io();
+let selectedName = null;
 let myUsername = "";
 let myColor = "";
 let allPlayers = [];
@@ -7,11 +8,16 @@ let myGrid = []; // Speichert den Zustand des 5x5 Feldes
 
 // 1. BEITRETEN
 function join() {
-    const nameInput = document.getElementById('username');
-    if (nameInput.value.trim() !== "") {
-        myUsername = nameInput.value.trim();
-        socket.emit('joinGame', myUsername);
-        document.getElementById('username').disabled = true;
+    if (selectedName) {
+        myUsername = selectedName; // Wir nutzen den Namen vom Button-Klick
+        socket.emit('join', myUsername);
+        
+        // Verstecke die Auswahl, damit man nicht mehrmals klickt
+        document.getElementById('namePicker').style.display = "none";
+        document.getElementById('joinBtn').style.display = "none";
+        // Den Text "Wähle deinen Helden-Namen" auch verstecken (falls vorhanden)
+        const p = document.querySelector('#lobby p');
+        if(p) p.style.display = "none";
     }
 }
 
@@ -33,8 +39,36 @@ socket.on('updatePlayers', (players) => {
     // Start-Button nur anzeigen, wenn man der erste Spieler ist
     if (players.length >= 1 && players[0].username === myUsername) {
         document.getElementById('startBtn').style.display = "block";
+        
     }
 });
+
+// Dieser Teil kommt neu hinzu
+socket.on('availableNames', (names) => {
+    const picker = document.getElementById('namePicker');
+    if (!picker) return;
+    picker.innerHTML = ""; 
+
+    names.forEach(name => {
+        const btn = document.createElement('button');
+        btn.innerText = name;
+        btn.className = "name-select-btn";
+        btn.onclick = () => selectName(name, btn);
+        picker.appendChild(btn);
+    });
+});
+
+function selectName(name, element) {
+    selectedName = name;
+    document.querySelectorAll('.name-select-btn').forEach(b => {
+        b.classList.remove('active-name');
+    });
+    element.classList.add('active-name');
+    
+    const joinBtn = document.getElementById('joinBtn');
+    joinBtn.disabled = false;
+    joinBtn.innerText = `${name} beitreten`;
+}
 
 // 3. SPIEL STARTEN (Logik für die Felder)
 function startGame() {
