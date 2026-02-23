@@ -18,3 +18,25 @@ body { font-family: sans-serif; background: #1a1a1a; color: white; text-align: c
 }
 .marked { opacity: 0.4; text-decoration: line-through; border: 2px solid white; }
 .player-tag { padding: 5px; margin: 5px; border-radius: 4px; display: inline-block; }
+.game-container {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 30px;
+    margin-top: 20px;
+    flex-wrap: wrap; /* Für mobile Geräte, damit es untereinander rutscht */
+}
+
+#activePlayersSidebar {
+    background: #222;
+    padding: 15px;
+    border-radius: 8px;
+    border: 1px solid #444;
+    min-width: 150px;
+}
+
+#activePlayerList .player-tag {
+    display: block; /* Untereinander anzeigen */
+    margin: 5px 0;
+    text-align: left;
+}
