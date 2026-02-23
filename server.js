@@ -13,7 +13,7 @@ let players = {};
 const COLORS = ["#e74c3c", "#3498db", "#2ecc71", "#f1c40f", "#9b59b6"];
 
 // Hier definierst du deine Kategorien und Begriffe
-const DATA = {
+const bingoDATA = {
     "Allgemein": [
         "Kurier stirbt", "Aegis geklaut", "Rampage", "First Blood", 
         "Turm fällt", "Roshan", "Divines Kauf", "Pause", "GG wp", "Rage Quit", 
