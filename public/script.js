@@ -164,3 +164,28 @@ socket.on('announceWinner', (winner) => {
     alert("BINGO! " + winner + " hat gewonnen!");
     location.reload(); // Startet die Lobby neu
 });
+
+socket.on('availableNames', (names) => {
+    const picker = document.getElementById('namePicker');
+    if (!picker) return;
+    
+    // Falls der aktuell gewählte Name plötzlich nicht mehr verfügbar ist (weil jemand schneller war)
+    if (selectedName && !names.includes(selectedName)) {
+        selectedName = null;
+        const joinBtn = document.getElementById('joinBtn');
+        joinBtn.disabled = true;
+        joinBtn.innerText = "Zuerst Namen wählen";
+    }
+
+    picker.innerHTML = ""; 
+    names.forEach(name => {
+        const btn = document.createElement('button');
+        btn.innerText = name;
+        btn.className = "name-select-btn";
+        // Wenn dieser Name gerade ausgewählt ist, markiere ihn wieder als aktiv
+        if(name === selectedName) btn.classList.add('active-name');
+        
+        btn.onclick = () => selectName(name, btn);
+        picker.appendChild(btn);
+    });
+});
