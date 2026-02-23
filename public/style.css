@@ -14,6 +14,16 @@ body {
     min-height: 100vh;
 }
 
+.logo {
+    width: 100px; /* Größe des Logos */
+    height: auto;
+    margin-bottom: 20px;
+    filter: drop-shadow(0 0 10px rgba(164, 35, 35, 0.5)); /* Ein leichter roter Schein */
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
 /* Glas-Effekt für die Boxen */
 #lobby, #game, #leaderboard {
     background: rgba(20, 20, 20, 0.85);
