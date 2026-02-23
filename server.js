@@ -53,17 +53,34 @@ const DATA = {
 };
 
 io.on('connection', (socket) => {
-  socket.on('joinGame', (username) => {
-    // Wir speichern den Namen so, wie er eingegeben wurde, 
-    // aber für die Suche in DATA nutzen wir später einen Trick.
-    if (Object.keys(players).length < 5) {
-        players[socket.id] = { 
-            username: username, // Originalname für die Anzeige
-            color: COLORS[Object.keys(players).length] 
-        };
+    // Funktion, um allen zu sagen, welche Namen noch frei sind
+    const sendAvailableNames = () => {
+        const allNames = Object.keys(bingoData); // Alle Namen aus deiner Liste
+        const takenNames = Object.values(players).map(p => p.username); // Namen derer, die schon drin sind
+        const freeNames = allNames.filter(name => !takenNames.includes(name));
+        
+        io.emit('availableNames', freeNames); // An ALLE senden
+    };
+
+    // Schicke die Liste sofort beim Verbinden
+    sendAvailableNames();
+
+    socket.on('join', (name) => {
+        // ... dein bisheriger Code zum Erstellen des Spielers ...
+        players[socket.id] = { username: name, color: COLORS[Object.keys(players).length] };
+        
+        // WICHTIG: Liste aktualisieren, wenn jemand beitritt
+        sendAvailableNames();
         io.emit('updatePlayers', Object.values(players));
-    }
     });
+
+    socket.on('disconnect', () => {
+        delete players[socket.id];
+        // WICHTIG: Name wieder freigeben, wenn jemand die Seite schließt
+        sendAvailableNames();
+        io.emit('updatePlayers', Object.values(players));
+    });
+});
 
     socket.on('gameStart', () => {
         io.emit('initGame', DATA);
