@@ -99,21 +99,6 @@ socket.on('startGameNow', () => {
     renderBingoField();
 });
 
-socket.on('announceWinner', (winner) => {
-    const overlay = document.getElementById('winnerOverlay');
-    const nameDisplay = document.getElementById('winnerNameDisplay');
-    
-    // Den Namen des Gewinners anzeigen
-    nameDisplay.innerText = `${winner} hat BINGO!`;
-    
-    // Das Overlay sichtbar machen
-    overlay.style.display = "flex";
-
-    // Optional: Ein kleiner Soundeffekt, falls du eine Datei hast
-    // let audio = new Audio('victory_sound.mp3');
-    // audio.play();
-});
-
 function updateActiveSidebar() {
     const sidebarList = document.getElementById('activePlayerList');
     if (!sidebarList) return;
@@ -152,4 +137,31 @@ function toggleCell(index, element) {
 
 function checkWin() {
     const lines = [
-        [0,1,2,3,4], [5,6,7,8,9
+        [0, 1, 2, 3, 4], [5, 6, 7, 8, 9], [10, 11, 12, 13, 14], [15, 16, 17, 18, 19], [20, 21, 22, 23, 24],
+        [0, 5, 10, 15, 20], [1, 6, 11, 16, 21], [2, 7, 12, 17, 22], [3, 8, 13, 18, 23], [4, 9, 14, 19, 24],
+        [0, 6, 12, 18, 24], [4, 8, 12, 16, 20]
+    ]; 
+
+    const hasWon = lines.some(line => line.every(idx => myGrid[idx] && myGrid[idx].clicked));
+    
+    if (hasWon) {
+        socket.emit('bingo', myUsername);
+    }
+}
+
+
+        socket.on('announceWinner', (winner) => {
+    const overlay = document.getElementById('winnerOverlay');
+    const nameDisplay = document.getElementById('winnerNameDisplay');
+    
+    // Den Namen des Gewinners anzeigen
+    nameDisplay.innerText = `${winner} hat BINGO!`;
+    
+    // Das Overlay sichtbar machen
+    overlay.style.display = "flex";
+
+    // Optional: Ein kleiner Soundeffekt, falls du eine Datei hast
+    // let audio = new Audio('victory_sound.mp3');
+    // audio.play();
+});
+
