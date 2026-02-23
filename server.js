@@ -54,13 +54,19 @@ const bingoDATA = {
 
 io.on('connection', (socket) => {
     // Funktion, um allen zu sagen, welche Namen noch frei sind
-    const sendAvailableNames = () => {
-        const allNames = Object.keys(bingoData); // Alle Namen aus deiner Liste
-        const takenNames = Object.values(players).map(p => p.username); // Namen derer, die schon drin sind
-        const freeNames = allNames.filter(name => !takenNames.includes(name));
-        
-        io.emit('availableNames', freeNames); // An ALLE senden
-    };
+   // Diese Funktion filtert "Allgemein" heraus
+const sendAvailableNames = () => {
+    const allKeys = Object.keys(bingoData); // Holt alle Namen (inkl. Allgemein)
+    
+    // Wir filtern "Allgemein" raus, damit es kein Button wird
+    const playerNamesOnly = allKeys.filter(name => name !== "Allgemein");
+    
+    // Jetzt prüfen wir, welche davon schon belegt sind
+    const takenNames = Object.values(players).map(p => p.username);
+    const freeNames = playerNamesOnly.filter(name => !takenNames.includes(name));
+    
+    io.emit('availableNames', freeNames);
+};
 
     // Schicke die Liste sofort beim Verbinden
     sendAvailableNames();
