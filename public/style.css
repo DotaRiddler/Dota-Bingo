@@ -15,13 +15,11 @@ body {
 }
 
 .logo {
-    width: 100px; /* Größe des Logos */
-    height: auto;
-    margin-bottom: 20px;
-    filter: drop-shadow(0 0 10px rgba(164, 35, 35, 0.5)); /* Ein leichter roter Schein */
     display: block;
-    margin-left: auto;
-    margin-right: auto;
+    margin: 0 auto 15px auto; /* Zentriert das Bild mit Abstand nach unten */
+    max-width: 280px;         /* Maximale Breite */
+    height: auto;             /* Höhe passt sich automatisch an */
+    filter: drop-shadow(0 0 10px rgba(164, 35, 35, 0.6)); /* Roter Dota-Glow */
 }
 
 /* Glas-Effekt für die Boxen */
