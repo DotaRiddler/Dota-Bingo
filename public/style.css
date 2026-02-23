@@ -14,6 +14,11 @@ body {
     min-height: 100vh;
 }
 
+.name-select-btn {
+    min-width: 120px;
+    margin: 5px;
+    }
+
 .logo {
     display: block;
     margin: 0 auto 15px auto; /* Zentriert das Bild mit Abstand nach unten */
