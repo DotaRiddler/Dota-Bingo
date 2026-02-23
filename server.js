@@ -16,24 +16,24 @@ const COLORS = ["#e74c3c", "#3498db", "#2ecc71", "#f1c40f", "#9b59b6"];
 const bingoData = {
     "Allgemein": [
         "Kurier stirbt", "Aegis geklaut", "Rampage", "First Blood", 
-        "Turm fällt", "Roshan", "Divines Kauf", "Pause", "GG wp", "Rage Quit", 
-        "Rülpser", "Zucker", "Mid lost", "Smurf", "inhouse", "AFK", "Throw", 
+        "Turm fällt", "Roshan", "Divines Kauf", "Pause", "Russisch", "Rage Quit", 
+        "Rülpser", "1. Tormentor in 30 min", "Mid lost", "Smurf", "inhouse", "AFK", "Throw", 
         "Comeback", "Schreie", "Russen", "Zuschauer joinen", "Pipi", 
         "BB", "CC", "DD", "EE"
     ],
-    "Shockwave": ["Begriff A1", "Begriff A2", "Begriff A3",
+    "Shockwave": ["unbekanntes Wort", "Begriff A2", "Begriff A3",
                   "Begriff A4", "Begriff A5", "Begriff A6"],
-    "Schocki": ["Begriff B1", "Begriff B2", "Begriff B3", 
-                "Begriff B4", "Begriff B5", "Begriff B6"],
-    "Jerrylarry": ["Begriff C1", "Begriff C2", "Begriff C3",
-                   "Begriff C4", "Begriff C5", "Begriff C6"],
-    "Nobody": ["Begriff D1", "Begriff D2", "Begriff D3",
-               "Begriff D4", "Begriff D5", "Begriff D6"],
-    "Brezel": ["Begriff B1", "Begriff B2", "Begriff B3", 
-               "Begriff B4", "Begriff B5", "Begriff B6"],
-    "Barid": ["Begriff C1", "Begriff C2", "Begriff C3", 
+    "Schocki": ["Hiiiilfeee", "Wowi", "Coolio", 
+                "pick WR", "Forcestaff Mobbing", "Klaut Lasthit", "Weini, Weini", "Lasthitlilly"],
+    "Jerrylarry": ["I blame Klausi"", "Lob an Schocki", "miau",
+                   "Klausi Alarm", "spielt Rolli Boy", "Hamdulilla", "Klausiiii"],
+    "Nobody": ["Ich kann nicht mehr", "ey Leude", "picked Techies",
+               "Grief Pick", "Begriff D5", "Begriff D6"],
+    "Brezel": ["Was soll ich bauen", "Neiiiin", "meeeh hab Angst", 
+               "ist verwirrt", "Begriff B5", "Begriff B6"],
+    "Barid": ["spielt Rubick", "Ausraster", "was ist das für ne Scheiße", 
               "Begriff C4", "Begriff C5", "Begriff C6"],
-    "Dome": ["Begriff D1", "Begriff D2", "Begriff D3", 
+    "Dome": ["AFK in Pick", "Begriff D2", "Begriff D3", 
              "Begriff D4", "Begriff D5", "Begriff D6"]
 };
 
