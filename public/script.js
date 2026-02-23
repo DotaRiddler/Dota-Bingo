@@ -99,6 +99,21 @@ socket.on('startGameNow', () => {
     renderBingoField();
 });
 
+socket.on('announceWinner', (winner) => {
+    const overlay = document.getElementById('winnerOverlay');
+    const nameDisplay = document.getElementById('winnerNameDisplay');
+    
+    // Den Namen des Gewinners anzeigen
+    nameDisplay.innerText = `${winner} hat BINGO!`;
+    
+    // Das Overlay sichtbar machen
+    overlay.style.display = "flex";
+
+    // Optional: Ein kleiner Soundeffekt, falls du eine Datei hast
+    // let audio = new Audio('victory_sound.mp3');
+    // audio.play();
+});
+
 function updateActiveSidebar() {
     const sidebarList = document.getElementById('activePlayerList');
     if (!sidebarList) return;
@@ -123,7 +138,7 @@ function renderBingoField() {
         cell.innerText = item.text;
         // Markierung setzen, falls bereits geklickt (für Reconnects nützlich)
         if(item.clicked) cell.classList.add('marked');
-        
+   ]     
         cell.onclick = () => toggleCell(index, cell);
         gridElement.appendChild(cell);
     });
