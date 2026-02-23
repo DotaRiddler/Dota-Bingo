@@ -163,3 +163,36 @@ input {
     display: block; /* In der Sidebar untereinander */
     margin: 8px 0;
 }
+
+.rules-box {
+    margin-top: 30px;
+    padding: 15px;
+    background: rgba(0, 0, 0, 0.4);
+    border: 1px dashed #a42323;
+    border-radius: 8px;
+    text-align: left;
+}
+
+.rules-box h3 {
+    font-size: 1rem;
+    color: gold;
+    margin-top: 0;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+.rules-box ul {
+    padding-left: 20px;
+    margin-bottom: 0;
+}
+
+.rules-box li {
+    font-size: 0.85rem;
+    margin-bottom: 8px;
+    color: #ccc;
+    line-height: 1.4;
+}
+
+.rules-box strong {
+    color: #a42323;
+}
