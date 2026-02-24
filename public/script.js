@@ -86,7 +86,7 @@ socket.on('initGame', (finalBoard) => {
     
     document.getElementById('lobby').style.display = "none";
     document.getElementById('game').style.display = "block";
-    
+    document.querySelector('h1').innerText = "Bingo";
     renderBingoField();
     updateActiveSidebar();
 });
