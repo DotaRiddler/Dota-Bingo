@@ -29,7 +29,6 @@ const bingoData = {
     "Dome": ["AFK in Pickphase", "Begriff D2", "Begriff D3", "Begriff D4", "Begriff D5", "Begriff D6"]
 };
 
-// Hilfsfunktion, um die Namen an ALLE zu senden
 function sendAvailableNamesToAll() {
     const allKeys = Object.keys(bingoData); 
     const playerNamesOnly = allKeys.filter(name => name !== "Allgemein");
@@ -41,14 +40,12 @@ function sendAvailableNamesToAll() {
 io.on('connection', (socket) => {
     console.log('Neuer User verbunden:', socket.id);
     
-    // 1. Schicke dem neuen User sofort die Namen
     const allKeys = Object.keys(bingoData); 
     const playerNamesOnly = allKeys.filter(name => name !== "Allgemein");
     const takenNames = Object.values(players).map(p => p.username);
     const freeNames = playerNamesOnly.filter(name => !takenNames.includes(name));
     socket.emit('availableNames', freeNames); 
 
-    // 2. Beitritts-Logik
     socket.on('join', (name) => {
         if (bingoData[name]) {
             players[socket.id] = { 
@@ -60,14 +57,11 @@ io.on('connection', (socket) => {
         }
     });
 
-    // 3. Spielstart
     socket.on('gameStart', () => {
         const connectedPlayers = Object.values(players);
-        
         Object.keys(players).forEach(socketId => {
             const currentPlayer = players[socketId];
             let boardPool = [];
-
             connectedPlayers.forEach(p => {
                 if (p.username !== currentPlayer.username) {
                     const category = bingoData[p.username] || [];
@@ -76,36 +70,27 @@ io.on('connection', (socket) => {
                     picked.forEach(text => boardPool.push({ text: text, color: p.color }));
                 }
             });
-
             let needed = 25 - boardPool.length;
             const generalShuffled = [...bingoData["Allgemein"]].sort(() => 0.5 - Math.random());
             const pickedGeneral = generalShuffled.slice(0, Math.max(0, needed));
             pickedGeneral.forEach(text => boardPool.push({ text: text, color: "#444444" }));
-
             let finalBoard = boardPool.sort(() => 0.5 - Math.random()).slice(0, 25);
             io.to(socketId).emit('initGame', finalBoard);
         });
-
         io.emit('startGameNow');
     });
 
-    // 4. Sieg-Event
     socket.on('bingo', (data) => {
-    // Schickt Name + Grid an ALLE verbundenen Clients
-    io.emit('announceWinner', {
-        name: data.name,
-        grid: data.grid
+        io.emit('announceWinner', data);
     });
 
-
-    // 5. Trennung
     socket.on('disconnect', () => {
         delete players[socket.id];
         sendAvailableNamesToAll();
         io.emit('updatePlayers', Object.values(players));
         console.log('User getrennt');
     });
-}); // <--- Hier schließt erst die Connection-Funktion!
+}); // Diese Klammer hat gefehlt!
 
 const PORT = process.env.PORT || 3000;
 server.listen(PORT, () => console.log(`Server läuft auf Port ${PORT}`));
