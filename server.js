@@ -91,8 +91,12 @@ io.on('connection', (socket) => {
 
     // 4. Sieg-Event
     socket.on('bingo', (data) => {
-        io.emit('announceWinner', data);
+    // Schickt Name + Grid an ALLE verbundenen Clients
+    io.emit('announceWinner', {
+        name: data.name,
+        grid: data.grid
     });
+
 
     // 5. Trennung
     socket.on('disconnect', () => {
