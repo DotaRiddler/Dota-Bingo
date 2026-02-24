@@ -38,18 +38,31 @@ function join() {
 }
 
 // 3. Spielerliste aktualisieren & Start-Button zeigen
+function renderPlayerList(players, elementId) {
+    const list = document.getElementById(elementId);
+    if (!list) return;
+    list.innerHTML = "";
+    players.forEach(p => {
+        const span = document.createElement('span');
+        span.innerText = p.username;
+        span.className = "player-tag";
+        span.style.backgroundColor = p.color;
+        list.appendChild(span);
+    });
+}
+
+// 2. Den Event-Listener korrigieren
 socket.on('updatePlayers', (players) => {
-    const list = document.getElementById('playerList');
-    if (list) {
-        list.innerHTML = "";
-        players.forEach(p => {
-            const span = document.createElement('span');
-            span.innerText = p.username;
-            span.className = "player-tag";
-            span.style.backgroundColor = p.color;
-            list.appendChild(span);
-        });
+    allPlayers = players; 
+    
+    // Liste in der Lobby aktualisieren
+    renderPlayerList(players, 'playerList'); 
+    
+    // Liste in der Sidebar (während des Spiels) aktualisieren
+    if (document.getElementById('game').style.display === "block") {
+        updateActiveSidebar(); 
     }
+});
 
     // Nur der erste Spieler (Host) sieht den "Spiel Starten" Button
     const startBtn = document.getElementById('startBtn');
