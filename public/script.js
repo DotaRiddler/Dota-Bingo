@@ -166,24 +166,42 @@ function checkWin() {
 
     const hasWon = lines.some(line => line.every(idx => myGrid[idx] && myGrid[idx].clicked));
     
-    if (hasWon) {
-        socket.emit('bingo', myUsername);
-    }
+    
+if (hasWon) {
+    socket.emit('bingo', { name: myUsername, grid: myGrid });
 }
 
 
-        socket.on('announceWinner', (winner) => {
+        socket.on('announceWinner', (data) => {
     const overlay = document.getElementById('winnerOverlay');
     const nameDisplay = document.getElementById('winnerNameDisplay');
     
-    // Den Namen des Gewinners anzeigen
-    nameDisplay.innerText = `${winner} gewinnt BINGO!`;
+    nameDisplay.innerText = `${data.name} hat BINGO!`;
     
-    // Das Overlay sichtbar machen
-    overlay.style.display = "flex";
+    // Wir erstellen eine Miniatur-Ansicht des Siegerfeldes
+    const winningGridPreview = document.createElement('div');
+    winningGridPreview.id = "winningGridPreview";
+    winningGridPreview.style.display = "grid";
+    winningGridPreview.style.setProperty('grid-template-columns', 'repeat(5, 1fr)');
+    winningGridPreview.style.gap = "4px";
+    winningGridPreview.style.marginTop = "20px";
 
-    // Optional: Ein kleiner Soundeffekt, falls du eine Datei hast
-    // let audio = new Audio('victory_sound.mp3');
-    // audio.play();
+    data.grid.forEach(item => {
+        const miniCell = document.createElement('div');
+        miniCell.style.padding = "5px";
+        miniCell.style.fontSize = "0.5rem";
+        miniCell.style.border = `1px solid ${item.color}`;
+        miniCell.style.background = item.clicked ? "rgba(164, 35, 35, 0.8)" : "#222";
+        miniCell.innerText = item.text;
+        winningGridPreview.appendChild(miniCell);
+    });
+
+    // Das alte Vorschaufeld entfernen, falls vorhanden, und das neue hinzufügen
+    const oldPreview = document.getElementById('winningGridPreview');
+    if(oldPreview) oldPreview.remove();
+    
+    document.querySelector('.overlay-content').insertBefore(winningGridPreview, document.querySelector('.overlay-content button'));
+    
+    overlay.style.display = "flex";
 });
 
