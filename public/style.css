@@ -14,16 +14,26 @@ body {
     min-height: 100vh;
 }
 
-h1 {
+h1, .main-title {
     color: #a42323;
     text-transform: uppercase;
     letter-spacing: 3px;
     text-shadow: 2px 2px 4px black;
-    margin-bottom: 30px;
+    margin-bottom: 20px;
+    text-align: center;
+    font-size: 2rem;
 }
 
-/* 2. ALLGEMEINE BUTTONS (Dota-Rot) */
+/* Verkleinert den Titel im Spielmodus für mehr Platz */
+#game:not([style*="display: none"]) ~ h1,
+#game:not([style*="display: none"]) ~ .main-title {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+}
+
+/* 2. ALLGEMEINE BUTTONS */
 button {
+    font-family: 'Cinzel', serif;
     background: linear-gradient(to bottom, #a42323, #6a1616);
     color: white;
     border: none;
@@ -35,12 +45,12 @@ button {
     transition: transform 0.2s, filter 0.2s;
 }
 
-button:hover {
+button:hover:not(:disabled) {
     transform: scale(1.05);
     filter: brightness(1.2);
 }
 
-/* 3. SPEZIELLE ELEMENTE (Lobby & Game Boxen) */
+/* 3. LOBBY & BOXEN */
 #lobby, #game, #leaderboard {
     background: rgba(20, 20, 20, 0.85);
     border: 2px solid #a42323; 
@@ -48,37 +58,22 @@ button:hover {
     padding: 30px;
     box-shadow: 0 10px 30px rgba(0,0,0,0.5);
     margin: 20px;
-    max-width: 600px;
-    width: 90%;
+    max-width: 90%;
+    width: auto;
     text-align: center;
 }
+
+#lobby { max-width: 600px; } /* Lobby bleibt kompakt */
 
 .logo {
     display: block;
     margin: 20px auto 10px auto;
-    max-width: 200px; /* Etwas kleiner, damit mehr Platz für das Grid ist */
+    max-width: 200px;
     height: auto;
     filter: drop-shadow(0 0 10px rgba(164, 35, 35, 0.6));
 }
 
-.main-title {
-    color: #a42323;
-    text-transform: uppercase;
-    letter-spacing: 3px;
-    text-shadow: 2px 2px 4px black;
-    margin-bottom: 20px;
-    text-align: center;
-    font-size: 2rem;
-}
-
-/* Optional: Wenn das Spiel läuft, können wir den Titel etwas verkleinern, 
-   damit das Grid nicht nach unten rutscht */
-#game:not([style*="display: none"]) ~ .main-title {
-    font-size: 1.5rem;
-    margin-bottom: 10px;
-}
-
-/* Name-Picker Buttons */
+/* Name-Picker */
 #namePicker {
     display: flex;
     flex-wrap: wrap;
@@ -89,7 +84,6 @@ button:hover {
 
 .name-select-btn {
     min-width: 120px;
-    margin: 5px;
     background: #222;
     border: 1px solid #444;
 }
@@ -100,20 +94,15 @@ button:hover {
     filter: brightness(1.3);
 }
 
-/* 4. DER BEITRETEN-BUTTON (Spezial-Logik) */
+/* 4. SPEZIAL-BUTTONS (Join & Start) */
 #joinBtn {
     display: block;
     margin: 30px auto 10px auto;
-    background: linear-gradient(to bottom, #d4af37, #a47a15); /* Dota-Gold */
+    background: linear-gradient(to bottom, #d4af37, #a47a15);
     border: 1px solid #5e4408;
-    color: white;
-    padding: 15px 40px;
-    font-size: 1.1rem;
     min-width: 280px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
 }
 
-/* WICHTIG: Disabled Zustand überschreibt alles darüber */
 #joinBtn:disabled {
     background: #333 !important;
     background-image: none !important;
@@ -125,121 +114,7 @@ button:hover {
     box-shadow: none !important;
 }
 
-.cell { 
-    background: rgba(40, 40, 40, 0.9);
-    border: 1px solid rgba(255, 255, 255, 0.1); 
-    display: flex; 
-    align-items: center; 
-    justify-content: center; 
-    text-align: center;
-    cursor: pointer; 
-    padding: 10px;
-    font-size: clamp(0.6rem, 2vw, 0.85rem);
-    font-weight: bold;
-    color: white;
-    text-shadow: 1px 1px 2px black;
-    transition: all 0.2s;
-    word-wrap: break-word;
-    overflow: hidden;
-}
-
-.cell:hover {
-    filter: brightness(1.3);
-    outline: 2px solid gold;
-    z-index: 10;
-}
-
-.marked { 
-    opacity: 0.6; 
-    background-color: #111 !important;
-    text-decoration: line-through; 
-    border: 2px solid #a42323; 
-    position: relative;
-}
-
-.marked::after {
-    content: "X";
-    position: absolute;
-    color: rgba(164, 35, 35, 0.8);
-    font-size: 3rem;
-    font-family: Arial, sans-serif;
-}
-
-/* 6. OVERLAYS & SIDEBAR */
-.overlay {
-    display: none;
-    position: fixed;
-    top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(0, 0, 0, 0.85);
-    z-index: 1000;
-    justify-content: center;
-    align-items: center;
-}
-
-.overlay-content {
-    background: #1a1a1a;
-    padding: 40px;
-    border: 2px solid gold;
-    border-radius: 15px;
-    text-align: center;
-    box-shadow: 0 0 30px rgba(164, 35, 35, 0.6);
-    animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-}
-
-@keyframes popIn {
-    0% { transform: scale(0.5); opacity: 0; }
-    100% { transform: scale(1); opacity: 1; }
-}
-
-.player-tag {
-  font-family: 'Cinzel', serif; /* Die Dota-Schriftart */
-    display: inline-block;
-    padding: 6px 12px;
-    margin: 5px;
-    border-radius: 4px;
-    font-weight: bold;
-    text-transform: uppercase;
-    font-size: 0.85rem;
-    border: 1px solid rgba(255,255,255,0.2);
-    letter-spacing: 1px;
-}
-
-    /* 7. REGEL-BOX STYLING */
-.rules-box h3 {
-    color: #d4af37 !important; /* Goldene Farbe */
-    text-transform: uppercase;
-    text-align: center;
-    margin-top: 0;
-    margin-bottom: 15px;
-    font-size: 1.2rem;
-    text-shadow: 1px 1px 3px black;
-}
-
-.rules-box ul {
-    list-style-type: none;
-    padding: 0;
-    text-align: left;
-}
-
-.rules-box li {
-    margin-bottom: 8px;
-    font-size: 0.9rem;
-    color: #ccc;
-    display: flex;
-    align-items: flex-start;
-}
-
-/* Kleiner goldener Punkt vor den Regeln */
-.rules-box li::before {
-    content: "•";
-    color: #d4af37;
-    font-weight: bold;
-    display: inline-block; 
-    width: 1em;
-    margin-left: 0;
-}
-
-/* 8. GAME LAYOUT (Grid Fokus) */
+/* 5. GAME LAYOUT (Das Herzstück) */
 .game-container {
     display: flex;
     flex-direction: row;
@@ -255,9 +130,8 @@ button:hover {
     grid-template-columns: repeat(5, 1fr); 
     grid-template-rows: repeat(5, 1fr); 
     gap: 12px; 
-    /* Hier erzwingen wir die Größe */
-    width: 800px; 
-    max-width: 90vw; /* Verhindert, dass es breiter als der Bildschirm ist */
+    width: 800px; /* Erzwingt die Größe auf Desktop */
+    max-width: 90vw;
     aspect-ratio: 1 / 1;
     margin: 0;
 }
@@ -271,59 +145,7 @@ button:hover {
     text-align: center;
     cursor: pointer;
     padding: 15px;
-    /* Schriftgröße deutlich lesbarer machen */
     font-size: 1rem; 
     font-weight: bold;
     color: white;
     text-shadow: 1px 1px 3px black;
-    word-wrap: break-word;
-    border-radius: 4px;
-}
-
-#activePlayersSidebar {
-    background: rgba(0, 0, 0, 0.7);
-    padding: 20px;
-    border-radius: 8px;
-    border-left: 3px solid #a42323;
-    width: 250px;
-    flex-shrink: 0; /* Sidebar darf NICHT schrumpfen */
-}
-
-#activePlayersSidebar h3 {
-    font-family: 'Cinzel', serif;
-    color: #d4af37;
-    text-transform: uppercase;
-    text-align: center;
-    margin-top: 0;
-    border-bottom: 1px solid rgba(212, 175, 55, 0.3);
-    padding-bottom: 5px;
-}
-
-/* Mobile Optimierung: Untereinander, wenn es zu eng wird */
-@media (max-width: 1100px) {
-    .game-container {
-        flex-direction: column;
-        align-items: center;
-    }
-    
-    #bingoGrid {
-        width: 95vw;
-        height: auto;
-    }
-}
-
-#activePlayerList {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-
-/* Anpassung für die Willkommensnachricht im Spiel */
-#welcomeMsg {
-    font-family: 'Cinzel', serif;
-    color: #e1e1e1;
-    text-align: center;
-    margin-bottom: 20px;
-    text-transform: uppercase;
-    font-size: 1.2rem;
-}
