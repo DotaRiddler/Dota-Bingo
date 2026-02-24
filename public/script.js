@@ -121,17 +121,22 @@ function updateActiveSidebar() {
 
 function renderBingoField() {
     const gridElement = document.getElementById('bingoGrid');
+    if (!gridElement) return;
     gridElement.innerHTML = "";
 
     myGrid.forEach((item, index) => {
         const cell = document.createElement('div');
         cell.className = "cell";
         
-        // Hier greifen wir auf .text und .color zu!
+        // WICHTIG: .text aufrufen!
         cell.innerText = item.text; 
-        cell.style.borderBottom = `5px solid ${item.color}`; // Farblicher Streifen unten
         
+        // Die Farbe des Spielers dezent als Rahmen unten anzeigen
+        cell.style.borderBottom = `5px solid ${item.color}`;
+        
+        // Falls das Feld markiert ist (wichtig für die Klick-Logik)
         if(item.clicked) cell.classList.add('marked');
+        
         cell.onclick = () => toggleCell(index, cell);
         gridElement.appendChild(cell);
     });
@@ -139,7 +144,16 @@ function renderBingoField() {
 
 function toggleCell(index, element) {
     myGrid[index].clicked = !myGrid[index].clicked;
-    element.classList.toggle('marked');
+    
+    if (myGrid[index].clicked) {
+        element.classList.add('marked');
+        // Optional: Die Zelle bekommt beim Klick einen dunkleren Hintergrund
+        element.style.backgroundColor = "rgba(164, 35, 35, 0.6)"; 
+    } else {
+        element.classList.remove('marked');
+        element.style.backgroundColor = "#222"; // Zurück zur Standardfarbe
+    }
+    
     checkWin();
 }
 
