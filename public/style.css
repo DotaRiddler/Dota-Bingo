@@ -55,10 +55,27 @@ button:hover {
 
 .logo {
     display: block;
-    margin: 0 auto 15px auto;
-    max-width: 280px;
+    margin: 20px auto 10px auto;
+    max-width: 200px; /* Etwas kleiner, damit mehr Platz für das Grid ist */
     height: auto;
     filter: drop-shadow(0 0 10px rgba(164, 35, 35, 0.6));
+}
+
+.main-title {
+    color: #a42323;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    text-shadow: 2px 2px 4px black;
+    margin-bottom: 20px;
+    text-align: center;
+    font-size: 2rem;
+}
+
+/* Optional: Wenn das Spiel läuft, können wir den Titel etwas verkleinern, 
+   damit das Grid nicht nach unten rutscht */
+#game:not([style*="display: none"]) ~ .main-title {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
 }
 
 /* Name-Picker Buttons */
