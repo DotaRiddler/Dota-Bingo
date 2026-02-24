@@ -3,15 +3,25 @@ let selectedName = null;
 let myUsername = "";
 let myColor = "";
 let allPlayers = [];
-let myGrid = []; // Speichert den Zustand des 5x5 Feldes
+let myGrid = [];
 
-// 1. BEITRETEN
+// 1. BEITRETEN & LOBBY
+function selectName(name, element) {
+    selectedName = name;
+    document.querySelectorAll('.name-select-btn').forEach(b => b.classList.remove('active-name'));
+    element.classList.add('active-name');
+    
+    const joinBtn = document.getElementById('joinBtn');
+    joinBtn.disabled = false;
+    joinBtn.innerText = `${name} beitreten`;
+}
+
 function join() {
     if (selectedName) {
         myUsername = selectedName;
         socket.emit('join', myUsername);
         
-        // UI Elemente ausblenden
+        // UI aufräumen
         document.getElementById('namePicker').style.display = "none";
         document.getElementById('joinBtn').style.display = "none";
         const p = document.querySelector('#lobby p');
@@ -19,36 +29,18 @@ function join() {
     }
 }
 
-// 2. SPIELERLISTE & NAMENSWAHL
-socket.on('updatePlayers', (players) => {
-    allPlayers = players;
-    const list = document.getElementById('playerList');
-    if (!list) return;
-    list.innerHTML = "";
-    
-    players.forEach(p => {
-        const span = document.createElement('span');
-        span.innerText = p.username;
-        span.className = "player-tag";
-        span.style.backgroundColor = p.color;
-        list.appendChild(span);
-        if(p.username === myUsername) myColor = p.color;
-    });
+function startGame() {
+    socket.emit('gameStart');
+}
 
-    // Start-Button nur für den ersten Spieler (Host) anzeigen
-    const startBtn = document.getElementById('startBtn');
-    if (players.length >= 1 && players[0].username === myUsername) {
-        startBtn.style.display = "block";
-    } else {
-        startBtn.style.display = "none";
-    }
-});
+// 2. SOCKET LISTENERS (Empfang vom Server)
 
+// Verfügbare Namen für die Buttons
 socket.on('availableNames', (names) => {
     const picker = document.getElementById('namePicker');
     if (!picker) return;
     
-    // Falls gewählter Name weg ist
+    // Falls unser gewählter Name plötzlich von jemand anderem geschnappt wurde
     if (selectedName && !names.includes(selectedName)) {
         selectedName = null;
         const joinBtn = document.getElementById('joinBtn');
@@ -62,48 +54,86 @@ socket.on('availableNames', (names) => {
         btn.innerText = name;
         btn.className = "name-select-btn";
         if(name === selectedName) btn.classList.add('active-name');
-        
         btn.onclick = () => selectName(name, btn);
         picker.appendChild(btn);
     });
 });
 
-function selectName(name, element) {
-    selectedName = name;
-    document.querySelectorAll('.name-select-btn').forEach(b => {
-        b.classList.remove('active-name');
-    });
-    element.classList.add('active-name');
-    
-    const joinBtn = document.getElementById('joinBtn');
-    joinBtn.disabled = false;
-    joinBtn.innerText = `${name} beitreten`;
-}
+// Spielerliste (Lobby & Sidebar)
+socket.on('updatePlayers', (players) => {
+    allPlayers = players;
+    const list = document.getElementById('playerList');
+    if (list) {
+        list.innerHTML = "";
+        players.forEach(p => {
+            const span = document.createElement('span');
+            span.innerText = p.username;
+            span.className = "player-tag";
+            span.style.backgroundColor = p.color;
+            list.appendChild(span);
+            if(p.username === myUsername) myColor = p.color;
+        });
+    }
 
-// 3. SPIEL-LOGIK
-function startGame() {
-    socket.emit('gameStart');
-}
+    // Start-Button Logik (nur für den Host)
+    const startBtn = document.getElementById('startBtn');
+    if (startBtn) {
+        startBtn.style.display = (players.length >= 1 && players[0].username === myUsername) ? "block" : "none";
+    }
 
-// Empfange das fertige Board vom Server
+    updateActiveSidebar();
+});
+
+// Board-Daten empfangen
 socket.on('initGame', (board) => {
-    // Wir speichern das ganze Objekt (text und color) und fügen 'clicked' hinzu
     myGrid = board.map(item => ({ 
         text: item.text, 
         color: item.color, 
         clicked: false 
     }));
     
-    document.getElementById('welcomeMsg').innerText = `Viel Glück, ${myUsername}!`;
-    updateActiveSidebar();
+    const welcome = document.getElementById('welcomeMsg');
+    if(welcome) welcome.innerText = `Viel Glück, ${myUsername}!`;
 });
 
-// Signal vom Host, dass es jetzt wirklich losgeht
+// Umschalten zur Spielansicht
 socket.on('startGameNow', () => {
     document.getElementById('lobby').style.display = "none";
     document.getElementById('game').style.display = "block";
     renderBingoField();
 });
+
+// Sieger-Nachricht empfangen (Das stand vorher falsch!)
+socket.on('announceWinner', (data) => {
+    const overlay = document.getElementById('winnerOverlay');
+    const nameDisplay = document.getElementById('winnerNameDisplay');
+    if(!overlay || !nameDisplay) return;
+
+    nameDisplay.innerText = `${data.name} hat BINGO!`;
+    
+    const winningGridPreview = document.createElement('div');
+    winningGridPreview.id = "winningGridPreview"; // Nutzt dein neues CSS!
+    
+    data.grid.forEach(item => {
+        const miniCell = document.createElement('div');
+        miniCell.style.borderBottom = `3px solid ${item.color}`;
+        if(item.clicked) {
+            miniCell.style.backgroundColor = "rgba(164, 35, 35, 0.8)";
+            miniCell.style.color = "white";
+        }
+        miniCell.innerText = item.text;
+        winningGridPreview.appendChild(miniCell);
+    });
+
+    const oldPreview = document.getElementById('winningGridPreview');
+    if(oldPreview) oldPreview.remove();
+    
+    const content = document.querySelector('.overlay-content');
+    content.insertBefore(winningGridPreview, content.querySelector('button'));
+    overlay.style.display = "flex";
+});
+
+// 3. GAME FUNCTIONS (UI Rendering)
 
 function updateActiveSidebar() {
     const sidebarList = document.getElementById('activePlayerList');
@@ -111,11 +141,13 @@ function updateActiveSidebar() {
     sidebarList.innerHTML = "";
     
     allPlayers.forEach(p => {
-        const span = document.createElement('span');
-        span.innerText = p.username;
-        span.className = "player-tag";
-        span.style.backgroundColor = p.color;
-        sidebarList.appendChild(span);
+        const div = document.createElement('div');
+        div.innerText = p.username;
+        div.className = "player-tag";
+        div.style.backgroundColor = p.color;
+        div.style.display = "block";
+        div.style.margin = "5px 0";
+        sidebarList.appendChild(div);
     });
 }
 
@@ -127,16 +159,10 @@ function renderBingoField() {
     myGrid.forEach((item, index) => {
         const cell = document.createElement('div');
         cell.className = "cell";
-        
-        // WICHTIG: .text aufrufen!
         cell.innerText = item.text; 
-        
-        // Die Farbe des Spielers dezent als Rahmen unten anzeigen
         cell.style.borderBottom = `5px solid ${item.color}`;
         
-        // Falls das Feld markiert ist (wichtig für die Klick-Logik)
         if(item.clicked) cell.classList.add('marked');
-        
         cell.onclick = () => toggleCell(index, cell);
         gridElement.appendChild(cell);
     });
@@ -147,11 +173,10 @@ function toggleCell(index, element) {
     
     if (myGrid[index].clicked) {
         element.classList.add('marked');
-        // Optional: Die Zelle bekommt beim Klick einen dunkleren Hintergrund
         element.style.backgroundColor = "rgba(164, 35, 35, 0.6)"; 
     } else {
         element.classList.remove('marked');
-        element.style.backgroundColor = "#222"; // Zurück zur Standardfarbe
+        element.style.backgroundColor = "#222";
     }
     
     checkWin();
@@ -159,49 +184,4 @@ function toggleCell(index, element) {
 
 function checkWin() {
     const lines = [
-        [0, 1, 2, 3, 4], [5, 6, 7, 8, 9], [10, 11, 12, 13, 14], [15, 16, 17, 18, 19], [20, 21, 22, 23, 24],
-        [0, 5, 10, 15, 20], [1, 6, 11, 16, 21], [2, 7, 12, 17, 22], [3, 8, 13, 18, 23], [4, 9, 14, 19, 24],
-        [0, 6, 12, 18, 24], [4, 8, 12, 16, 20]
-    ]; 
-
-    const hasWon = lines.some(line => line.every(idx => myGrid[idx] && myGrid[idx].clicked));
-    
-    
-if (hasWon) {
-    socket.emit('bingo', { name: myUsername, grid: myGrid });
-}
-
-
-        socket.on('announceWinner', (data) => {
-    const overlay = document.getElementById('winnerOverlay');
-    const nameDisplay = document.getElementById('winnerNameDisplay');
-    
-    nameDisplay.innerText = `${data.name} hat BINGO!`;
-    
-    // Wir erstellen eine Miniatur-Ansicht des Siegerfeldes
-    const winningGridPreview = document.createElement('div');
-    winningGridPreview.id = "winningGridPreview";
-    winningGridPreview.style.display = "grid";
-    winningGridPreview.style.setProperty('grid-template-columns', 'repeat(5, 1fr)');
-    winningGridPreview.style.gap = "4px";
-    winningGridPreview.style.marginTop = "20px";
-
-    data.grid.forEach(item => {
-        const miniCell = document.createElement('div');
-        miniCell.style.padding = "5px";
-        miniCell.style.fontSize = "0.5rem";
-        miniCell.style.border = `1px solid ${item.color}`;
-        miniCell.style.background = item.clicked ? "rgba(164, 35, 35, 0.8)" : "#222";
-        miniCell.innerText = item.text;
-        winningGridPreview.appendChild(miniCell);
-    });
-
-    // Das alte Vorschaufeld entfernen, falls vorhanden, und das neue hinzufügen
-    const oldPreview = document.getElementById('winningGridPreview');
-    if(oldPreview) oldPreview.remove();
-    
-    document.querySelector('.overlay-content').insertBefore(winningGridPreview, document.querySelector('.overlay-content button'));
-    
-    overlay.style.display = "flex";
-});
-
+        [0, 1, 2, 3, 4], [5, 6, 7, 8, 9], [10, 11, 12,
