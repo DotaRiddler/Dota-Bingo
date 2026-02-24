@@ -2,7 +2,21 @@ const socket = io();
 let selectedName = null;
 let myUsername = "";
 let myGrid = [];
-let allPlayers = []; // Global speichern für die Sidebar
+let allPlayers = [];
+
+// DIESE FUNKTION MUSS GANZ OBEN STEHEN
+function renderPlayerList(players, elementId) {
+    const list = document.getElementById(elementId);
+    if (!list) return;
+    list.innerHTML = "";
+    players.forEach(p => {
+        const span = document.createElement('span');
+        span.innerText = p.username;
+        span.className = "player-tag";
+        span.style.backgroundColor = p.color;
+        list.appendChild(span);
+    });
+}
 
 // 1. Namen empfangen
 socket.on('availableNames', (names) => {
