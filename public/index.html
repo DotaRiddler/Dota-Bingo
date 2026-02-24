@@ -9,17 +9,8 @@
 <body>
     <img src="logo.png" alt="Dota 2 Bingo" class="logo">
     <h1 class="main-title">Bingo Lobby</h1>
-    <div id="winnerOverlay" class="overlay">
-        <div class="overlay-content">
-            <h2 id="winnerNameDisplay">gewinnt BINGO!</h2>
-            <p>Ein glorreicher Sieg!</p>
-            <button onclick="location.reload()">Zurück zur Lobby</button>
-        </div>
-    </div>
 
     <div id="lobby">
-        
-        
         <p>Wähle deinen Helden:</p>
         
         <div id="namePicker"></div>
@@ -54,6 +45,14 @@
                 <h3>Mitspieler</h3>
                 <div id="activePlayerList"></div>
             </div>
+        </div>
+    </div>
+
+    <div id="winnerOverlay" class="overlay">
+        <div class="overlay-content">
+            <h2 id="winnerNameDisplay">gewinnt BINGO!</h2>
+            <p>Ein glorreicher Sieg!</p>
+            <button onclick="location.reload()">Zurück zur Lobby</button>
         </div>
     </div>
 
