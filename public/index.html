@@ -1,54 +1,60 @@
 <!DOCTYPE html>
-<html>
+<html lang="de">
 <head>
-    <title>Bingo</title>
+    <meta charset="UTF-8">
+    <title>Dota Bingo</title>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&display=swap" rel="stylesheet">
-    
     <link rel="stylesheet" href="style.css">
 </head>
-    <div id="winnerOverlay" class="overlay">
-    <div class="overlay-content">
-        <h2 id="winnerNameDisplay">GEWONNEN!</h2>
-        <p>Ein glorreicher Sieg für dich!</p>
-        <button onclick="location.reload()">Zurück zur Lobby</button>
-    </div>
-</div>
 <body>
-    
-   <div id="lobby">
-    <img src="logo.png" alt="Dota 2 Bingo" class="logo">
-            
-        <h1>Bingo Lobby</h1>
-        <p>Wähle deinen Helden-Namen:</p>
-<div id="namePicker" style="display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-bottom: 20px;">
-    </div>
-<button id="joinBtn" onclick="join()" disabled>Zuerst Namen wählen</button>
-        <div id="playerList"></div>
-        <button id="startBtn" style="display:none;" onclick="startGame()">Spiel Starten</button>
-    </div>
 
-<div class="rules-box">
-    <h3>📜 So wird gespielt</h3>
-    <ul>
-        <li>Wähle einen Namen und tritt der Lobby bei.</li>
-        <li>Sobald der Host startet, erhält jeder ein zufälliges Board. Die farbigen Felder sind passend zu den Spielern. Allgemeine Felder sind farblos.</li>
-        <li>Klicke auf ein Feld, wenn das Ereignis im Spiel eintritt.</li>
-        <li>Wer zuerst 5 Felder (horizontal, vertikal oder diagonal) markiert gewinnt <strong>BINGO!</strong></li>
-    </ul>
-</div>
-    
-    <div id="game" style="display:none;">
-    <h2 id="welcomeMsg"></h2>
-    
-    <div class="game-container">
-        <div id="bingoGrid"></div>
-
-        <div id="activePlayersSidebar">
-            <h3>Mitspieler</h3>
-            <div id="activePlayerList"></div>
+    <div id="winnerOverlay" class="overlay">
+        <div class="overlay-content">
+            <h2 id="winnerNameDisplay">GEWONNEN!</h2>
+            <p>Ein glorreicher Sieg für dich!</p>
+            <button onclick="location.reload()">Zurück zur Lobby</button>
         </div>
     </div>
-</div>
+
+    <div id="lobby">
+        <img src="logo.png" alt="Dota 2 Bingo" class="logo">
+        <h1>Bingo Lobby</h1>
+        <p>Wähle deinen Helden-Namen:</p>
+        
+        <div id="namePicker"></div>
+
+        <button id="joinBtn" onclick="join()" disabled>Zuerst Namen wählen</button>
+        
+        <div id="playerListContainer" style="margin-top: 20px;">
+            <p>Bereit im Team:</p>
+            <div id="playerList"></div>
+        </div>
+
+        <button id="startBtn" style="display:none; margin-top: 20px;" onclick="startGame()">Spiel Starten</button>
+
+        <div class="rules-box">
+            <h3>📜 So wird gespielt</h3>
+            <ul>
+                <li>Wähle einen Namen und tritt der Lobby bei.</li>
+                <li>Sobald der Host startet, erhält jeder ein zufälliges Board.</li>
+                <li>Die farbigen Felder sind passend zu den Spielern.</li>
+                <li>Wer zuerst eine 5er-Reihe hat, gewinnt <strong>BINGO!</strong></li>
+            </ul>
+        </div>
+    </div>
+
+    <div id="game" style="display:none;">
+        <h2 id="welcomeMsg"></h2>
+        
+        <div class="game-container">
+            <div id="bingoGrid"></div>
+
+            <div id="activePlayersSidebar">
+                <h3>Mitspieler</h3>
+                <div id="activePlayerList"></div>
+            </div>
+        </div>
+    </div>
 
     <script src="/socket.io/socket.io.js"></script>
     <script src="script.js"></script>
