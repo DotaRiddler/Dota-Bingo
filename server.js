@@ -55,25 +55,30 @@ io.on('connection', (socket) => {
         }
     });
 
-    socket.on('gameStart', () => {
+  socket.on('gameStart', () => {
         const connectedPlayers = Object.values(players);
         
-        // Erstelle für jeden Socket (Spieler) ein individuelles Board
         Object.keys(players).forEach(socketId => {
+            const currentPlayer = players[socketId]; // Der Besitzer dieses spezifischen Boards
             let boardPool = [];
 
-            // 1. Begriffe von JEDEM Spieler im Spiel hinzufügen (z.B. bis zu 4 Begriffe pro Person)
+            // 1. Begriffe von ANDEREN Spielern hinzufügen
             connectedPlayers.forEach(p => {
-                const category = bingoData[p.username] || [];
-                const shuffledCategory = [...category].sort(() => 0.5 - Math.random());
-                const picked = shuffledCategory.slice(0, 4);
-                
-                picked.forEach(text => {
-                    boardPool.push({ text: text, color: p.color });
-                });
+                // WICHTIG: Nur hinzufügen, wenn der Name NICHT der eigene ist
+                if (p.username !== currentPlayer.username) {
+                    const category = bingoData[p.username] || [];
+                    const shuffledCategory = [...category].sort(() => 0.5 - Math.random());
+                    
+                    // Wir nehmen etwas mehr (z.B. 5), da wir ja einen Spieler weniger im Pool haben
+                    const picked = shuffledCategory.slice(0, 5);
+                    
+                    picked.forEach(text => {
+                        boardPool.push({ text: text, color: p.color });
+                    });
+                }
             });
 
-            // 2. Rest mit "Allgemein" auffüllen (Farbe Grau)
+            // 2. Rest mit "Allgemein" auffüllen
             let needed = 25 - boardPool.length;
             const generalShuffled = [...bingoData["Allgemein"]].sort(() => 0.5 - Math.random());
             const pickedGeneral = generalShuffled.slice(0, Math.max(0, needed));
@@ -82,14 +87,12 @@ io.on('connection', (socket) => {
                 boardPool.push({ text: text, color: "#444444" });
             });
 
-            // 3. Pool mischen und auf 25 begrenzen
+            // 3. Mischen
             let finalBoard = boardPool.sort(() => 0.5 - Math.random()).slice(0, 25);
 
-            // 4. Nur an diesen speziellen Spieler senden
             io.to(socketId).emit('initGame', finalBoard);
         });
 
-        // Allen das Signal zum Umschalten der UI geben
         io.emit('startGameNow');
     });
 
