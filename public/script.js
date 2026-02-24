@@ -87,7 +87,13 @@ function startGame() {
 
 // Empfange das fertige Board vom Server
 socket.on('initGame', (board) => {
-    myGrid = board.map(text => ({ text: text, clicked: false }));
+    // Wir speichern das ganze Objekt (text und color) und fügen 'clicked' hinzu
+    myGrid = board.map(item => ({ 
+        text: item.text, 
+        color: item.color, 
+        clicked: false 
+    }));
+    
     document.getElementById('welcomeMsg').innerText = `Viel Glück, ${myUsername}!`;
     updateActiveSidebar();
 });
