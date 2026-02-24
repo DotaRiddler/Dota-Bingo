@@ -191,3 +191,38 @@ button:hover {
     padding: 6px 12px;
     margin: 5px;
     border-radius:
+
+    /* 7. REGEL-BOX STYLING */
+.rules-box h3 {
+    color: #d4af37 !important; /* Goldene Farbe */
+    text-transform: uppercase;
+    text-align: center;
+    margin-top: 0;
+    margin-bottom: 15px;
+    font-size: 1.2rem;
+    text-shadow: 1px 1px 3px black;
+}
+
+.rules-box ul {
+    list-style-type: none;
+    padding: 0;
+    text-align: left;
+}
+
+.rules-box li {
+    margin-bottom: 8px;
+    font-size: 0.9rem;
+    color: #ccc;
+    display: flex;
+    align-items: flex-start;
+}
+
+/* Kleiner goldener Punkt vor den Regeln */
+.rules-box li::before {
+    content: "•";
+    color: #d4af37;
+    font-weight: bold;
+    display: inline-block; 
+    width: 1em;
+    margin-left: 0;
+}
