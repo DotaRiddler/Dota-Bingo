@@ -5,6 +5,24 @@ let myColor = "";
 let allPlayers = [];
 let myGrid = [];
 
+// SOFORT beim Laden die verfügbaren Namen abgreifen
+socket.on('availableNames', (names) => {
+    console.log("Empfangene Namen:", names); // Schau in die F12-Konsole!
+    const picker = document.getElementById('namePicker');
+    if (!picker) return;
+    
+    picker.innerHTML = ""; 
+    names.forEach(name => {
+        const btn = document.createElement('button');
+        btn.innerText = name;
+        btn.className = "name-select-btn";
+        if(name === selectedName) btn.classList.add('active-name');
+        
+        btn.onclick = () => selectName(name, btn);
+        picker.appendChild(btn);
+    });
+});
+
 // 1. BEITRETEN & LOBBY
 function selectName(name, element) {
     selectedName = name;
