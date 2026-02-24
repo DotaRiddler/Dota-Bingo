@@ -15,18 +15,20 @@ const COLORS = ["#e74c3c", "#3498db", "#2ecc71", "#f1c40f", "#9b59b6", "#e67e22"
 const bingoData = {
     "Allgemein": [
         "Kurier stirbt", "Aegis geklaut", "Rampage", "First Blood", 
-        "Turm fällt", "Roshan", "Divines Kauf", "Pause", "Russisch", "Rage Quit", 
-        "Rülpser", "1. Tormentor in 30 min", "Mid lost", "Smurf", "inhouse", "AFK", "Throw", 
-        "Comeback", "Schreie", "Russen", "Zuschauer joinen", "Pipi", 
-        "BB", "CC", "DD", "EE"
+        "Dire Wins", "Radiant Wins", "Roshan", "Divine Rapier", "Pause", "Russen im Spiel", "Rage Quit", 
+        "Rülpser", "1.Tormentor nach 30 min", "AFK", "Buyback", "Pudge", "Schreie",
+        "Mega Creeps Defense", "Toxischer Chat", "Zuschauer will stream", "Gegner Tower vor 15min.", 
+        "Gegner Rax vor 30min.", "Eigene Rax vor 30min."
     ],
-    "Shockwave": ["unbekanntes Wort", "Begriff A2", "Begriff A3", "Begriff A4", "Begriff A5", "Begriff A6"],
+    "Shockwave": ["unbekanntes Wort", "Niceität", "Lass mal smoken", "Tormentor?", "Lane ist easy", "Hab Freefarm", "macht Firstblood", "feeded 3 mal vor 10. min"],
     "Schoki": ["Hiiiilfeee", "Wowi", "Coolio", "pick WR", "Forcestaff Mobbing", "Klaut Lasthit", "Weini, Weini", "Lasthitlilly", "Mmmmh Mmmmh Mmmmh"],
-    "Jerrylarry": ["I blame Klausi", "Lob an Schocki", "miau", "Klausi Alarm", "spielt Rolli Boy", "Hamdulilla", "Klausiiii"],
-    "Nobody": ["Ich kann nicht mehr", "ey Leude", "picked Techies", "Grief Pick", "Begriff D5", "Begriff D6"],
-    "Brezel": ["Was soll ich bauen", "Neiiiin", "meeeh hab Angst", "ist verwirrt", "Begriff B5", "Begriff B6"],
-    "Barid": ["spielt Rubick", "Ausraster", "was ist das für ne Scheiße", "lass mal dagon bauen", "erzählt von kacke", "besoffen", "traurig weil kein Rubick"],
-    "Dome": ["AFK in Pickphase", "Begriff D2", "Begriff D3", "Begriff D4", "Begriff D5", "Begriff D6"]
+    "Jerrylarry": ["I blame Klausi", "Lob an Schocki", "miau", "Klausi Alarm", "spielt Rolli Boy", "Alhamdulillah", "Klausiiii"],
+    "Nobody": ["Ich kann nicht mehr", "ey Leude", "pick Techies", "pick AM", "wiederholt Witz", "Smurfed"],
+    "Brezel": ["Was soll ich bauen", "Neiiiin", "meeeh hab Angst", "ist verwirrt", "pick Snapfire", "Isst irgendwas"],
+    "Barid": ["pick Rubick", "Ausraster", "was ist das für ne Scheiße", "Dagon", "erzählt von Kacke", "besoffen", "traurig weil kein Rubick"],
+    "Dome": ["AFK beim Pick", "full Mute", "Snippy Pippy", "HA HA", "Meteor Hammer", "HA HA"],
+    "Noctex": ["Pick mir Razor", "Braucht wer Skin XY", "mit Jerry streiten", "Nur wenn kein anderer kann"]
+    "Spacy": ["Leise wegen Freundin", "Berlinert", "Lacht sich schlapp", "Ich hasse Sniper"]
 };
 
 function sendAvailableNamesToAll() {
