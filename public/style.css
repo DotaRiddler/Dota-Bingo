@@ -125,18 +125,6 @@ button:hover {
     box-shadow: none !important;
 }
 
-/* 5. BINGO GRID & SPIEL-LOGIK */
-#bingoGrid { 
-    display: grid; 
-    grid-template-columns: repeat(5, 1fr); 
-    grid-template-rows: repeat(5, 1fr); 
-    gap: 8px; 
-    width: 100%;
-    max-width: 600px;
-    margin: 20px auto; 
-    aspect-ratio: 1 / 1;
-}
-
 .cell { 
     background: rgba(40, 40, 40, 0.9);
     border: 1px solid rgba(255, 255, 255, 0.1); 
@@ -252,41 +240,56 @@ button:hover {
 }
 
 /* 8. GAME LAYOUT (Sidebar & Grid Anordnung) */
+/* 8. GAME LAYOUT (Optimiert für großes Grid) */
 .game-container {
     display: flex;
-    flex-direction: row; /* Erzwingt Nebeneinander */
+    flex-direction: row;
     justify-content: center;
     align-items: flex-start;
     gap: 30px;
-    width: 95%;
-    max-width: 1200px;
+    width: 98%;           /* Nutzt fast die volle Breite */
+    max-width: 1400px;     /* Erlaubt ein sehr breites Layout */
     margin: 20px auto;
 }
 
-#activePlayersSidebar h3 {
-    font-family: 'Cinzel', serif;
-    color: #d4af37;
-    text-transform: uppercase;
-    font-size: 1.1rem;
-    margin-top: 0;
-    margin-bottom: 15px;
-    text-align: center;
-    border-bottom: 1px solid rgba(212, 175, 55, 0.3);
-    padding-bottom: 5px;
+#bingoGrid { 
+    display: grid; 
+    grid-template-columns: repeat(5, 1fr); 
+    grid-template-rows: repeat(5, 1fr); 
+    gap: 10px;            /* Etwas mehr Abstand zwischen den Zellen */
+    width: 100%;
+    max-width: 750px;      /* Hier ist die Größe! Von 500px auf 750px erhöht */
+    aspect-ratio: 1 / 1;
+    margin: 0;
+    flex: 2;              /* Sagt dem Browser: "Gib dem Grid doppelt so viel Platz wie der Sidebar" */
 }
 
-/* Mobile Optimierung: Wenn der Bildschirm zu schmal ist (Handy) */
-@media (max-width: 800px) {
+#activePlayersSidebar {
+    background: rgba(0, 0, 0, 0.7);
+    padding: 20px;
+    border-radius: 8px;
+    border-left: 3px solid #a42323;
+    width: 250px;          /* Sidebar auch ein klein wenig breiter für die Lesbarkeit */
+    flex-shrink: 0;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+}
+
+/* Mobile Optimierung bleibt wichtig, damit das große Grid auf dem Handy nicht abgeschnitten wird */
+@media (max-width: 1000px) { /* Etwas früher umbrechen, da das Grid jetzt breiter ist */
     .game-container {
-        flex-direction: column; /* Alles untereinander */
+        flex-direction: column;
         align-items: center;
     }
     
+    #bingoGrid {
+        max-width: 95vw;    /* Auf dem Handy fast volle Bildschirmbreite */
+    }
+
     #activePlayersSidebar {
         width: 100%;
-        max-width: 500px;
-        border-left: none; /* Roter Strich links weg... */
-        border-top: 3px solid #a42323; /* ...dafür roter Strich oben */
+        max-width: 600px;
+        border-left: none;
+        border-top: 3px solid #a42323;
         margin-top: 20px;
     }
 }
