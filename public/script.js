@@ -64,15 +64,40 @@ function startGame() {
 }
 
 // 5. Grid empfangen und DANN erst zur Spielansicht wechseln
+// Speichert die Spieler global, damit die Sidebar sie immer kennt
+let allPlayers = []; 
+
+socket.on('updatePlayers', (players) => {
+    allPlayers = players; // WICHTIG: Liste speichern
+    renderPlayerList(players, 'playerList'); // Lobby-Liste
+    if (document.getElementById('game').style.display === "block") {
+        updateActiveSidebar(); // Sidebar-Liste falls Spiel läuft
+    }
+});
+
 socket.on('initGame', (finalBoard) => {
     myGrid = finalBoard.map(item => ({ ...item, clicked: false }));
-    renderBingoField();
     
-    // Jetzt erst die Lobby ausblenden und das Spiel einblenden
     document.getElementById('lobby').style.display = "none";
     document.getElementById('game').style.display = "block";
-    document.querySelector('.rules-box').style.display = "none";
+    
+    renderBingoField();
+    updateActiveSidebar(); // Zeige Mitspieler beim Start direkt an
 });
+
+function updateActiveSidebar() {
+    const sidebar = document.getElementById('activePlayerList');
+    if (!sidebar) return;
+    sidebar.innerHTML = "";
+    
+    allPlayers.forEach(p => {
+        const div = document.createElement('div');
+        div.className = "player-tag";
+        div.style.backgroundColor = p.color;
+        div.innerText = p.username;
+        sidebar.appendChild(div);
+    });
+}
 
 function renderBingoField() {
     const gridElement = document.getElementById('bingoGrid');
@@ -82,16 +107,34 @@ function renderBingoField() {
         cell.className = "cell";
         cell.innerText = item.text;
         cell.style.borderBottom = `5px solid ${item.color}`;
+        if (item.clicked) cell.classList.add('marked');
+
         cell.onclick = () => {
-            item.clicked = !item.clicked;
+            myGrid[index].clicked = !myGrid[index].clicked;
             cell.classList.toggle('marked');
-            checkWin();
+            checkWin(); // Prüfe nach jedem Klick
         };
         gridElement.appendChild(cell);
     });
 }
 
 function checkWin() {
-    // Hier kommt deine Gewinn-Logik (Lines prüfen)
-    // Wenn gewonnen: socket.emit('bingo', { name: myUsername, grid: myGrid });
+    // Alle Gewinn-Kombinationen (Indizes im 25er Array)
+    const lines = [
+        // Horizontal
+        [0,1,2,3,4], [5,6,7,8,9], [10,11,12,13,14], [15,16,17,18,19], [20,21,22,23,24],
+        // Vertikal
+        [0,5,10,15,20], [1,6,11,16,21], [2,7,12,17,22], [3,8,13,18,23], [4,9,14,19,24],
+        // Diagonal
+        [0,6,12,18,24], [4,8,12,16,20]
+    ];
+
+    const won = lines.some(line => {
+        return line.every(index => myGrid[index] && myGrid[index].clicked);
+    });
+
+    if (won) {
+        console.log("BINGO gefunden!");
+        socket.emit('bingo', { name: myUsername, grid: myGrid });
+    }
 }
