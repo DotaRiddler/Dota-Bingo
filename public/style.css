@@ -164,17 +164,15 @@ h1, .main-title {
     background: rgba(0, 0, 0, 0.9);
     z-index: 10000;
     
-    /* Diese drei Zeilen sind entscheidend: */
-    display: none !important;      /* Nimmt keinen Platz weg */
-    visibility: hidden;           /* Komplett unsichtbar */
-    pointer-events: none;         /* Klicks gehen einfach durch */
+    /* Das sorgt dafür, dass es absolut keinen Platz wegnimmt und unsichtbar ist */
+    display: none !important; 
+    pointer-events: none; /* Man kann hindurchklicken */
 }
 
-/* Nur wenn die Klasse 'active' per JavaScript hinzugefügt wird */
+/* Diese Klasse wird vom Script erst beim Sieg hinzugefügt */
 .overlay.active {
-    display: flex !important;      /* Erscheint wieder */
-    visibility: visible;
-    pointer-events: auto;         /* Klicks funktionieren wieder */
+    display: flex !important;
+    pointer-events: auto; /* Klicks funktionieren wieder */
     justify-content: center;
     align-items: center;
 }
