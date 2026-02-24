@@ -138,3 +138,44 @@ function checkWin() {
         socket.emit('bingo', { name: myUsername, grid: myGrid });
     }
 }
+
+// --- EMPFANG DER SIEGESNACHRICHT (Ganz unten in script.js) ---
+socket.on('announceWinner', (data) => {
+    const overlay = document.getElementById('winnerOverlay');
+    const nameDisplay = document.getElementById('winnerNameDisplay');
+    
+    if (!overlay || !nameDisplay) return;
+
+    // Den Namen des Gewinners anzeigen
+    nameDisplay.innerText = `${data.name} hat BINGO!`;
+    
+    // Das Sieger-Grid im Overlay hübsch aufbereiten
+    let previewHTML = `<div id="winningGridPreview" style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 5px; margin: 20px auto; max-width: 300px;">`;
+    
+    data.grid.forEach(item => {
+        const color = item.clicked ? "rgba(164, 35, 35, 0.9)" : "#333";
+        const textColor = item.clicked ? "white" : "#777";
+        const border = item.clicked ? "1px solid gold" : "1px solid #444";
+        
+        previewHTML += `
+            <div style="background: ${color}; color: ${textColor}; border: ${border}; font-size: 0.6rem; padding: 5px; aspect-ratio: 1/1; display: flex; align-items: center; justify-content: center; text-align: center; border-radius: 3px;">
+                ${item.text}
+            </div>`;
+    });
+    
+    previewHTML += `</div>`;
+
+    // Altes Vorschaubild entfernen und neues einfügen
+    const oldPreview = document.getElementById('winningGridPreview');
+    if (oldPreview) oldPreview.remove();
+    
+    // Füge die Vorschau vor dem Button ein
+    const content = overlay.querySelector('.overlay-content');
+    const button = content.querySelector('button');
+    const tempDiv = document.createElement('div');
+    tempDiv.innerHTML = previewHTML;
+    content.insertBefore(tempDiv.firstChild, button);
+
+    // Overlay für alle sichtbar machen
+    overlay.style.display = "flex";
+});
