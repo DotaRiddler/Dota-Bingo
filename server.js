@@ -96,9 +96,10 @@ io.on('connection', (socket) => {
         io.emit('startGameNow');
     });
 
-    socket.on('bingo', (name) => {
-        io.emit('announceWinner', name);
-    });
+    socket.on('bingo', (data) => {
+    // data enthält jetzt { name: "Spielername", grid: [...] }
+    io.emit('announceWinner', data);
+});
 
     socket.on('disconnect', () => {
         delete players[socket.id];
