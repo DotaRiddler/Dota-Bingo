@@ -177,7 +177,7 @@ function checkWin() {
     const nameDisplay = document.getElementById('winnerNameDisplay');
     
     // Den Namen des Gewinners anzeigen
-    nameDisplay.innerText = `${winner} hat BINGO!`;
+    nameDisplay.innerText = `${winner} gewinnt BINGO!`;
     
     // Das Overlay sichtbar machen
     overlay.style.display = "flex";
