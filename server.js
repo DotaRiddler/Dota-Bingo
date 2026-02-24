@@ -17,8 +17,8 @@ const bingoData = {
         "Kurier stirbt", "Aegis geklaut", "Rampage", "First Blood", 
         "Dire Wins", "Radiant Wins", "Roshan", "Divine Rapier", "Pause", "Russen im Spiel", "Rage Quit", 
         "Rülpser", "1.Tormentor nach 30 min", "AFK", "Buyback", "Pudge", "Schreie",
-        "Mega Creeps Defense", "Toxischer Chat", "Zuschauer will stream", "Gegner Tower vor 15min.", 
-        "Gegner Rax vor 30min.", "Eigene Rax vor 30min.", "DC"
+        "Mega Creeps Defense", "Toxischer Chat", "Zuschauer will Stream", "Gegner Tower vor 15min. zerstört", 
+        "Gegner Rax vor 30min. zerstört", "Eigene Rax vor 30min. verloren", "DC"
     ],
     "Shockwave": ["unbekanntes Wort", "Niceität", "Lass mal smoken", "Tormentor?", "Lane ist easy", "Hab Freefarm", "macht Firstblood", "feeded 3 mal vor 10. min"],
     "Schoki": ["Hiiiilfeee", "Wowi", "Coolio", "pick WR", "Forcestaff Mobbing", "Klaut Lasthit", "Weini, Weini", "Lasthitlilly"],
