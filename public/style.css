@@ -55,10 +55,10 @@ button:hover:not(:disabled) {
 
 #lobby { width: 600px; text-align: center; }
 
-/* 4. GAME LAYOUT (FIXED GRID) */
+/* 4. GAME LAYOUT (FIXED GRID 800px) */
 .game-container {
     display: flex;
-    flex-direction: row; /* Immer nebeneinander */
+    flex-direction: row;
     justify-content: center;
     align-items: flex-start;
     gap: 40px;
@@ -67,47 +67,50 @@ button:hover:not(:disabled) {
 
 #bingoGrid { 
     display: grid; 
-    /* FIX: Wir nutzen feste Pixel (140px pro Zelle), damit nichts mehr schrumpft */
-    grid-template-columns: repeat(5, 140px); 
-    grid-template-rows: repeat(5, 140px); 
-    gap: 10px; 
+    /* 5 Spalten a 160px = 800px Gesamtbreite */
+    grid-template-columns: repeat(5, 160px); 
+    grid-template-rows: repeat(5, 160px); 
+    gap: 12px; 
     background: rgba(0,0,0,0.5);
-    padding: 10px;
+    padding: 15px;
     border-radius: 8px;
+    border: 1px solid rgba(255, 215, 0, 0.1);
 }
 
 .cell {
-    background: #222;
+    background: rgba(40, 40, 40, 0.95);
     border: 1px solid #444;
     display: flex;
     align-items: center;
     justify-content: center;
     text-align: center;
     cursor: pointer;
-    padding: 10px;
-    font-size: 0.85rem; /* Schriftgröße für lange Wörter optimiert */
+    padding: 15px;
+    font-size: 0.95rem; 
     font-weight: bold;
     color: white;
-    text-shadow: 1px 1px 2px black;
-    word-wrap: break-word; /* Bricht lange Wörter wie "DIREKTWINS" um */
+    text-shadow: 1px 1px 3px black;
+    word-wrap: break-word;
     overflow-wrap: break-word;
     border-radius: 4px;
-    transition: background 0.2s;
+    transition: all 0.2s;
 }
 
 .cell:hover {
     background: #333;
     border: 1px solid gold;
+    transform: scale(1.02);
+    z-index: 2;
 }
 
 .marked { 
-    background-color: #a42323 !important; /* Markierte Felder werden Dota-Rot */
+    background-color: #a42323 !important;
     color: white;
-    text-decoration: line-through;
-    position: relative;
+    border: 2px solid gold !important;
+    box-shadow: inset 0 0 20px rgba(0,0,0,0.5);
 }
 
-/* 5. SIDEBAR (MIT SPIELERLISTE) */
+/* 5. SIDEBAR */
 #activePlayersSidebar {
     background: rgba(15, 15, 15, 0.95);
     padding: 20px;
@@ -134,19 +137,41 @@ button:hover:not(:disabled) {
     text-align: center;
     border-radius: 4px;
     font-weight: bold;
+    font-family: 'Cinzel', serif;
 }
 
-/* 6. SONSTIGES */
-.logo {
-    max-width: 250px;
-    margin-bottom: 10px;
+/* 6. JOIN BUTTON & REGELN */
+#joinBtn {
+    display: block;
+    margin: 30px auto 10px auto;
+    background: linear-gradient(to bottom, #d4af37, #a47a15);
+    border: 1px solid #5e4408;
+    min-width: 280px;
+    color: white;
+    font-size: 1.1rem;
 }
 
 #joinBtn:disabled {
-    background: #444 !important;
+    background: #333 !important;
+    background-image: none !important;
+    color: #777 !important;
     cursor: not-allowed;
-    opacity: 0.5;
+    opacity: 0.6;
+    border: 1px solid #222 !important;
 }
 
-.rules-box h3 { color: gold !important; text-align: center; }
-.rules-box ul { list-style: none; padding: 0; color: #ccc; }
+.rules-box {
+    margin-top: 30px;
+    padding: 20px;
+    border: 1px dashed #a42323;
+    background: rgba(0,0,0,0.3);
+}
+
+.rules-box h3 { 
+    color: gold !important; 
+    text-align: center; 
+    text-transform: uppercase;
+}
+
+.rules-box ul { list-style: none; padding: 0; color: #ccc; text-align: left; }
+.rules-box li { margin-bottom: 8px; }
