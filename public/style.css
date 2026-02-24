@@ -1,4 +1,4 @@
-/* Haupt-Hintergrund mit einem Dota-Wallpaper */
+/* 1. GRUNDLAGEN & HINTERGRUND */
 body { 
     font-family: 'Cinzel', serif; 
     background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), 
@@ -14,13 +14,155 @@ body {
     min-height: 100vh;
 }
 
+h1 {
+    color: #a42323;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    text-shadow: 2px 2px 4px black;
+    margin-bottom: 30px;
+}
+
+/* 2. ALLGEMEINE BUTTONS (Dota-Rot) */
+button {
+    background: linear-gradient(to bottom, #a42323, #6a1616);
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    text-transform: uppercase;
+    transition: transform 0.2s, filter 0.2s;
+}
+
+button:hover {
+    transform: scale(1.05);
+    filter: brightness(1.2);
+}
+
+/* 3. SPEZIELLE ELEMENTE (Lobby & Game Boxen) */
+#lobby, #game, #leaderboard {
+    background: rgba(20, 20, 20, 0.85);
+    border: 2px solid #a42323; 
+    border-radius: 12px;
+    padding: 30px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    margin: 20px;
+    max-width: 600px;
+    width: 90%;
+    text-align: center;
+}
+
+.logo {
+    display: block;
+    margin: 0 auto 15px auto;
+    max-width: 280px;
+    height: auto;
+    filter: drop-shadow(0 0 10px rgba(164, 35, 35, 0.6));
+}
+
+/* Name-Picker Buttons */
+#namePicker {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
 .name-select-btn {
     min-width: 120px;
     margin: 5px;
+    background: #222;
+    border: 1px solid #444;
 }
 
+.name-select-btn.active-name {
+    border: 1px solid gold;
+    box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+    filter: brightness(1.3);
+}
+
+/* 4. DER BEITRETEN-BUTTON (Spezial-Logik) */
+#joinBtn {
+    display: block;
+    margin: 30px auto 10px auto;
+    background: linear-gradient(to bottom, #d4af37, #a47a15); /* Dota-Gold */
+    border: 1px solid #5e4408;
+    color: white;
+    padding: 15px 40px;
+    font-size: 1.1rem;
+    min-width: 280px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+}
+
+/* WICHTIG: Disabled Zustand überschreibt alles darüber */
+#joinBtn:disabled {
+    background: #333 !important;
+    background-image: none !important;
+    color: #777 !important;
+    border: 1px solid #222 !important;
+    cursor: not-allowed !important;
+    transform: none !important;
+    filter: grayscale(1) !important;
+    box-shadow: none !important;
+}
+
+/* 5. BINGO GRID & SPIEL-LOGIK */
+#bingoGrid { 
+    display: grid; 
+    grid-template-columns: repeat(5, 1fr); 
+    grid-template-rows: repeat(5, 1fr); 
+    gap: 8px; 
+    width: 100%;
+    max-width: 600px;
+    margin: 20px auto; 
+    aspect-ratio: 1 / 1;
+}
+
+.cell { 
+    background: rgba(40, 40, 40, 0.9);
+    border: 1px solid rgba(255, 255, 255, 0.1); 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    text-align: center;
+    cursor: pointer; 
+    padding: 10px;
+    font-size: clamp(0.6rem, 2vw, 0.85rem);
+    font-weight: bold;
+    color: white;
+    text-shadow: 1px 1px 2px black;
+    transition: all 0.2s;
+    word-wrap: break-word;
+    overflow: hidden;
+}
+
+.cell:hover {
+    filter: brightness(1.3);
+    outline: 2px solid gold;
+    z-index: 10;
+}
+
+.marked { 
+    opacity: 0.6; 
+    background-color: #111 !important;
+    text-decoration: line-through; 
+    border: 2px solid #a42323; 
+    position: relative;
+}
+
+.marked::after {
+    content: "X";
+    position: absolute;
+    color: rgba(164, 35, 35, 0.8);
+    font-size: 3rem;
+    font-family: Arial, sans-serif;
+}
+
+/* 6. OVERLAYS & SIDEBAR */
 .overlay {
-    display: none; /* Standardmäßig unsichtbar */
+    display: none;
     position: fixed;
     top: 0; left: 0; width: 100%; height: 100%;
     background: rgba(0, 0, 0, 0.85);
@@ -39,264 +181,13 @@ body {
     animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
-.overlay-content h2 {
-    color: gold;
-    font-size: 2.5rem;
-    margin-bottom: 10px;
-    text-shadow: 2px 2px 5px black;
-}
-
 @keyframes popIn {
     0% { transform: scale(0.5); opacity: 0; }
     100% { transform: scale(1); opacity: 1; }
 }
 
-.logo {
-    display: block;
-    margin: 0 auto 15px auto; /* Zentriert das Bild mit Abstand nach unten */
-    max-width: 280px;         /* Maximale Breite */
-    height: auto;             /* Höhe passt sich automatisch an */
-    filter: drop-shadow(0 0 10px rgba(164, 35, 35, 0.6)); /* Roter Dota-Glow */
-}
-
-/* Glas-Effekt für die Boxen */
-#lobby, #game, #leaderboard {
-    background: rgba(20, 20, 20, 0.85);
-    border: 2px solid #a42323; /* Dota-Rot */
-    border-radius: 12px;
-    padding: 30px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-    margin: 20px;
-    max-width: 600px;
-    width: 90%;
-}
-
-h1 {
-    color: #a42323;
-    text-transform: uppercase;
-    letter-spacing: 3px;
-    text-shadow: 2px 2px 4px black;
-    margin-bottom: 30px;
-}
-
-/* Buttons im Dota-Look */
-button {
-    background: linear-gradient(to bottom, #a42323, #6a1616);
-    color: white;
-    border: none;
-    padding: 12px 25px;
-    border-radius: 4px;
-    cursor: pointer;
-    font-weight: bold;
-    text-transform: uppercase;
-    transition: transform 0.2s, filter 0.2s;
-}
-
-button:hover {
-    transform: scale(1.05);
-    filter: brightness(1.2);
-}
-
-input {
-    background: #111;
-    border: 1px solid #444;
-    color: white;
-    padding: 10px;
-    border-radius: 4px;
-    margin-bottom: 10px;
-    width: 200px;
-}
-
-/* Das Herzstück: Das 5x5 Raster */
-#bingoGrid { 
-    display: grid; 
-    grid-template-columns: repeat(5, 1fr); /* GENAU 5 Spalten */
-    grid-template-rows: repeat(5, 1fr);    /* GENAU 5 Zeilen */
-    gap: 8px; 
-    width: 100%;
-    max-width: 600px; /* Damit es auf großen Bildschirmen nicht zu riesig wird */
-    margin: 20px auto; 
-    aspect-ratio: 1 / 1; /* Hält das Feld quadratisch */
-}
-
-/* Die einzelnen Felder */
-.cell { 
-    background: rgba(40, 40, 40, 0.9);
-    border: 1px solid rgba(255, 255, 255, 0.1); 
-    display: flex; 
-    align-items: center; 
-    justify-content: center; 
-    text-align: center;
-    cursor: pointer; 
-    padding: 10px;
-    font-size: clamp(0.6rem, 2vw, 0.9rem); /* Schriftgröße passt sich dem Bildschirm an */
-    font-family: 'Cinzel', serif;
-    font-weight: bold;
-    color: white;
-    text-shadow: 1px 1px 2px black;
-    transition: all 0.2s;
-    word-wrap: break-word; /* Bricht lange Wörter um */
-    overflow: hidden;
-}
-
-.cell:hover {
-    filter: brightness(1.3);
-    outline: 2px solid gold;
-    z-index: 10;
-}
-
-/* Markierte Felder */
-.marked { 
-    opacity: 0.5; 
-    background-color: #222 !important; /* Dunkelt das Feld ab */
-    text-decoration: line-through; 
-    border: 2px solid #a42323; 
-    position: relative;
-}
-
-/* Ein X über das Feld legen, wenn markiert */
-.marked::after {
-    content: "X";
-    position: absolute;
-    color: rgba(164, 35, 35, 0.8);
-    font-size: 3rem;
-    font-family: Arial, sans-serif;
-}
-
-/* Styling für die Spielernamen-Schilder */
 .player-tag {
     display: inline-block;
     padding: 6px 12px;
     margin: 5px;
-    border-radius: 4px;
-    font-weight: bold;
-    text-transform: uppercase;
-    font-size: 0.9rem;
-    box-shadow: 2px 2px 5px rgba(0,0,0,0.3);
-    border: 1px solid rgba(255,255,255,0.2);
-}
-
-/* Das sorgt dafür, dass Grid und Sidebar nebeneinander stehen */
-.game-container {
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    gap: 20px;
-    width: 100%;
-    max-width: 900px;
-    flex-wrap: wrap; /* Wichtig für Handys: Sidebar rutscht unter das Feld */
-}
-
-/* Die Sidebar während des Spiels */
-#activePlayersSidebar {
-    background: rgba(0, 0, 0, 0.5);
-    padding: 15px;
-    border-radius: 8px;
-    border-left: 3px solid #a42323;
-    min-width: 180px;
-}
-
-#activePlayerList .player-tag {
-    display: block; /* In der Sidebar untereinander */
-    margin: 8px 0;
-}
-
-.rules-box {
-    margin-top: 30px;
-    padding: 15px;
-    background: rgba(0, 0, 0, 0.4);
-    border: 1px dashed #a42323;
-    border-radius: 8px;
-    text-align: left;
-}
-
-.rules-box h3 {
-    font-size: 1rem;
-    color: gold;
-    margin-top: 0;
-    text-align: center;
-    text-transform: uppercase;
-}
-
-.rules-box ul {
-    padding-left: 20px;
-    margin-bottom: 0;
-}
-
-.rules-box li {
-    font-size: 0.85rem;
-    margin-bottom: 8px;
-    color: #ccc;
-    line-height: 1.4;
-}
-
-.rules-box strong {
-    color: #a42323;
-}
-
-/* Spezielles Styling für den Beitritts-Knopf */
-#joinBtn {
-    display: block;             /* Ermöglicht das Zentrieren mit margin auto */
-    margin: 30px auto 10px auto; /* Oben 30px Platz, Mitte, unten 10px */
-    background: linear-gradient(to bottom, #d4af37, #a47a15); /* Edles Dota-Gold */
-    border: 1px solid #5e4408;
-    color: white;
-    padding: 15px 40px;
-    font-size: 1.1rem;
-    min-width: 280px;           /* Damit der Knopf eine schöne Breite hat */
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
-    transition: all 0.3s ease;
-}
-
-/* Zustand: "Zuerst Namen wählen" (Deaktiviert) */
-#joinBtn:disabled {
-    background: #333;           /* Neutrales Dunkelgrau */
-    border: 1px solid #222;
-    color: #777;
-    cursor: not-allowed;
-    transform: none;            /* Kein Wackeln beim Drüberfahren */
-    filter: grayscale(1);       /* Macht es komplett farblos */
-    box-shadow: none;
-}
-
-/* Zustand: "Name beitreten" (Aktiviert & Hover) */
-#joinBtn:not(:disabled):hover {
-    background: linear-gradient(to bottom, #f1c40f, #d4af37); /* Leuchtendes Gold */
-    box-shadow: 0 0 20px rgba(212, 175, 55, 0.4);
-    transform: scale(1.02);
-}
-
-/* Kleine Anpassung für den Name-Picker, damit alles mittig bleibt */
-#namePicker {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 10px;
-    margin-bottom: 10px;
-}
-
-#winningGridPreview {
-    background: rgba(0, 0, 0, 0.4);
-    padding: 15px;
-    border: 1px solid gold;
-    border-radius: 8px;
-    max-width: 400px;
-    margin: 20px auto;
-}
-
-#winningGridPreview div {
-    color: #ccc;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 40px;
-    border-radius: 2px;
-    line-height: 1.1;
-}
-
-/* Die Zellen, die der Gewinner angeklickt hat, leuchten leicht */
-#winningGridPreview div[style*="rgba(164, 35, 35, 0.8)"] {
-    color: white;
-    font-weight: bold;
-    box-shadow: inset 0 0 10px rgba(255, 215, 0, 0.3);
-}
+    border-radius:
