@@ -69,6 +69,53 @@ h1, .main-title {
     color: gold;
     background: #2a2a2a !important;
 }
+/* --- STYLING FÜR SPEZIAL-BUTTONS --- */
+
+/* SPIEL STARTEN (Der "Epic" Button) */
+#startBtn {
+    display: block;
+    margin: 30px auto 10px auto;
+    background: linear-gradient(to bottom, #d4af37, #a47a15); /* Sattes Gold */
+    border: 1px solid #5e4408;
+    color: white;
+    font-size: 1.2rem;
+    letter-spacing: 1px;
+    padding: 15px 40px;
+    box-shadow: 0 0 15px rgba(212, 175, 55, 0.3);
+    text-shadow: 1px 1px 2px black;
+}
+
+#startBtn:hover {
+    box-shadow: 0 0 25px rgba(212, 175, 55, 0.6);
+    filter: brightness(1.2);
+    transform: scale(1.05);
+}
+
+/* LOBBY VERLASSEN (Dezenter, aber edel) */
+/* Falls du den Button im HTML noch einbaust, gib ihm die ID 'leaveBtn' oder Klasse 'leave-btn' */
+.leave-btn, #leaveBtn {
+    background: linear-gradient(to bottom, #444, #222) !important;
+    border: 1px solid #a42323 !important; /* Roter Rand als Warnung */
+    color: #ccc !important;
+    font-size: 0.8rem;
+    padding: 8px 15px;
+    margin-top: 15px;
+    opacity: 0.8;
+}
+
+.leave-btn:hover, #leaveBtn:hover {
+    background: linear-gradient(to bottom, #a42323, #6a1616) !important;
+    color: white !important;
+    opacity: 1;
+    box-shadow: 0 0 10px rgba(164, 35, 35, 0.4);
+}
+
+/* --- OPTIMIERUNG DER ABSTÄNDE --- */
+#lobby {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
 
 /* 4. JOIN BUTTON (Disabled Logik erzwingen) */
 #joinBtn {
