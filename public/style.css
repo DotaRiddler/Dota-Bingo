@@ -14,74 +14,79 @@ body {
     min-height: 100vh;
 }
 
+/* 2. LOGO (Normalisiert) */
+.logo {
+    max-width: 150px; /* Von 250px auf 150px verkleinert */
+    height: auto;
+    margin: 10px auto;
+    display: block;
+}
+
 h1, .main-title {
     color: #a42323;
     text-transform: uppercase;
     letter-spacing: 3px;
     text-shadow: 2px 2px 4px black;
-    margin: 20px 0;
+    margin: 10px 0;
     text-align: center;
-    font-size: 2.5rem;
+    font-size: 2rem;
 }
 
-/* 2. ALLGEMEINE BUTTONS */
-button {
-    font-family: 'Cinzel', serif;
-    background: linear-gradient(to bottom, #a42323, #6a1616);
-    color: white;
-    border: none;
-    padding: 12px 25px;
-    border-radius: 4px;
-    cursor: pointer;
-    font-weight: bold;
-    text-transform: uppercase;
-    transition: transform 0.2s, box-shadow 0.2s, filter 0.2s;
-}
-
-button:hover:not(:disabled) {
-    transform: scale(1.05);
-    filter: brightness(1.2);
-}
-
-/* 3. LOBBY & BOXEN */
-#lobby, #game {
-    background: rgba(20, 20, 20, 0.9);
-    border: 2px solid #a42323; 
-    border-radius: 12px;
-    padding: 30px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.8);
-    margin: 20px;
-}
-
-#lobby { width: 600px; text-align: center; }
-
-/* SPIELER-NAMEN BUTTONS IN LOBBY */
+/* 3. LOBBY - NAMEN WÄHLEN */
 .name-select-btn {
-    background: #1a1a1a !important; /* Dunkel */
+    background: #1a1a1a !important;
     border: 1px solid #444 !important;
     color: #888;
     margin: 5px;
+    padding: 10px 20px;
 }
 
 .name-select-btn:hover {
-    border: 1px solid #a42323 !important;
-    box-shadow: 0 0 10px rgba(164, 35, 35, 0.5);
+    border: 1px solid gold !important;
     color: white;
+    box-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
 }
 
 .name-select-btn.active-name {
     border: 1px solid gold !important;
-    box-shadow: 0 0 15px rgba(255, 215, 0, 0.4);
+    box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
     color: gold;
     background: #2a2a2a !important;
 }
 
-/* 4. GAME LAYOUT (FIXED GRID 800px) */
+/* 4. JOIN BUTTON (Disabled Logik erzwingen) */
+#joinBtn {
+    display: block;
+    margin: 20px auto;
+    background: linear-gradient(to bottom, #d4af37, #a47a15);
+    border: 1px solid #5e4408;
+    min-width: 280px;
+    color: white;
+    padding: 15px;
+    font-weight: bold;
+}
+
+#joinBtn:disabled {
+    background: #222 !important; /* Dunkelgrau wenn aus */
+    background-image: none !important;
+    color: #444 !important;
+    border: 1px solid #111 !important;
+    cursor: not-allowed !important;
+    box-shadow: none !important;
+    transform: none !important;
+    opacity: 0.8;
+}
+
+#joinBtn:not(:disabled):hover {
+    box-shadow: 0 0 20px rgba(212, 175, 55, 0.6);
+    transform: scale(1.05);
+}
+
+/* 5. GAME LAYOUT & GRID (Stabil 800px) */
 .game-container {
     display: flex;
     flex-direction: row;
     justify-content: center;
-    align-items: flex-start;
     gap: 40px;
     padding: 20px;
 }
@@ -91,87 +96,48 @@ button:hover:not(:disabled) {
     grid-template-columns: repeat(5, 160px); 
     grid-template-rows: repeat(5, 160px); 
     gap: 12px; 
-    background: rgba(0,0,0,0.5);
-    padding: 15px;
-    border-radius: 8px;
-    border: 1px solid rgba(255, 215, 0, 0.1);
 }
 
 .cell {
-    background: rgba(40, 40, 40, 0.95);
+    background: rgba(30, 30, 30, 0.95);
     border: 1px solid #444;
     display: flex;
     align-items: center;
     justify-content: center;
     text-align: center;
-    cursor: pointer;
     padding: 15px;
-    font-size: 0.95rem; 
     font-weight: bold;
-    color: white;
-    text-shadow: 1px 1px 3px black;
-    word-wrap: break-word;
-    overflow-wrap: break-word;
-    border-radius: 4px;
-    transition: all 0.2s;
+    cursor: pointer;
 }
 
-.cell:hover {
-    background: #333;
-    border: 1px solid gold;
-    transform: scale(1.02);
-    z-index: 2;
+.marked { background: #a42323 !important; border: 2px solid gold !important; }
+
+/* 6. WINNER FENSTER (Radikal versteckt) */
+.overlay {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.9);
+    z-index: 10000;
+    display: none !important; /* Das hier MUSS es verstecken */
 }
 
-.marked { 
-    background-color: #a42323 !important;
-    color: white;
-    border: 2px solid gold !important;
-    box-shadow: inset 0 0 20px rgba(0,0,0,0.5);
+/* Nur wenn im HTML <div id="winnerOverlay" class="overlay active"> steht: */
+.overlay.active {
+    display: flex !important;
 }
 
-/* 5. SIDEBAR */
+/* 7. SIDEBAR & REST */
 #activePlayersSidebar {
     background: rgba(15, 15, 15, 0.95);
     padding: 20px;
     border: 2px solid #a42323;
-    border-radius: 8px;
     width: 250px;
 }
 
-#activePlayersSidebar h3 {
-    color: gold;
-    text-transform: uppercase;
-    text-align: center;
-    margin-top: 0;
-    border-bottom: 1px solid #444;
-    padding-bottom: 10px;
-}
-
 .player-tag {
-    display: block;
     background: #a42323;
-    color: white;
     padding: 10px;
-    margin: 10px 0;
-    text-align: center;
-    border-radius: 4px;
-    font-weight: bold;
-    font-family: 'Cinzel', serif;
-}
-
-/* 6. JOIN BUTTON & REGELN */
-#joinBtn {
+    margin: 5px 0;
     display: block;
-    margin: 30px auto 10px auto;
-    background: linear-gradient(to bottom, #d4af37, #a47a15); /* Gold */
-    border: 1px solid #5e4408;
-    min-width: 280px;
-    color: white;
-    font-size: 1.1rem;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
-}
-
-#joinBtn:hover:not(:disabled) {
-    box-shadow: 0 0 20px rgba(212, 175, 55, 0.6); /* Gold-Leuchten */
+    text-align: center;
 }
