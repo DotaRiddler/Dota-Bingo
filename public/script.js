@@ -170,5 +170,6 @@ socket.on('announceWinner', (data) => {
     tempDiv.innerHTML = previewHTML;
     content.insertBefore(tempDiv.firstChild, button);
 
-    overlay.style.display = "flex";
+    // Wir nutzen die CSS-Klasse, um das !important im CSS zu triggern
+    overlay.classList.add('active');
 });
