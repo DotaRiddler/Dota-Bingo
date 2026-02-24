@@ -204,10 +204,17 @@ button:hover {
 }
 
 .player-tag {
+  font-family: 'Cinzel', serif; /* Die Dota-Schriftart */
     display: inline-block;
     padding: 6px 12px;
     margin: 5px;
-    border-radius:
+    border-radius: 4px;
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    border: 1px solid rgba(255,255,255,0.2);
+    letter-spacing: 1px;
+}
 
     /* 7. REGEL-BOX STYLING */
 .rules-box h3 {
@@ -242,4 +249,53 @@ button:hover {
     display: inline-block; 
     width: 1em;
     margin-left: 0;
+}
+
+/* 8. GAME LAYOUT (Sidebar & Grid Anordnung) */
+.game-container {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 20px;
+    width: 100%;
+    max-width: 1000px;
+    margin: 0 auto;
+    flex-wrap: wrap; /* Sorgt dafür, dass es auf Handys untereinander springt */
+}
+
+#activePlayersSidebar {
+    background: rgba(0, 0, 0, 0.6);
+    padding: 20px;
+    border-radius: 8px;
+    border-left: 3px solid #a42323;
+    min-width: 200px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+}
+
+#activePlayersSidebar h3 {
+    font-family: 'Cinzel', serif;
+    color: #d4af37;
+    text-transform: uppercase;
+    font-size: 1.1rem;
+    margin-top: 0;
+    margin-bottom: 15px;
+    text-align: center;
+    border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+    padding-bottom: 5px;
+}
+
+#activePlayerList {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* Anpassung für die Willkommensnachricht im Spiel */
+#welcomeMsg {
+    font-family: 'Cinzel', serif;
+    color: #e1e1e1;
+    text-align: center;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    font-size: 1.2rem;
 }
