@@ -27,7 +27,7 @@ const bingoData = {
     "Brezel": ["Was soll ich bauen", "Neiiiin", "meeeh hab Angst", "ist verwirrt", "pick Snapfire", "Isst irgendwas"],
     "Barid": ["pick Rubick", "Ausraster", "was ist das für ne Scheiße", "Dagon", "erzählt von Kacke", "besoffen", "traurig weil kein Rubick"],
     "Dome": ["AFK beim Pick", "full Mute", "Snippy Pippy", "HA HA", "Meteor Hammer", "HA HA"],
-    "Noctex": ["Pick mir Razor", "Braucht wer Skin XY", "mit Jerry streiten", "Nur wenn kein anderer kann"]
+    "Noctex": ["Pick mir Razor", "Braucht wer Skin XY", "mit Jerry streiten", "Nur wenn kein anderer kann"],
     "Spacy": ["Leise wegen Freundin", "Berlinert", "Lacht sich schlapp", "Ich hasse Sniper"]
 };
 
