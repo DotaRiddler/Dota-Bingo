@@ -30,14 +30,17 @@ const bingoData = {
 };
 
 io.on('connection', (socket) => {
+    console.log('Neuer User verbunden');
     
-    const sendAvailableNames = () => {
-        const allKeys = Object.keys(bingoData); 
-        const playerNamesOnly = allKeys.filter(name => name !== "Allgemein");
-        const takenNames = Object.values(players).map(p => p.username);
-        const freeNames = playerNamesOnly.filter(name => !takenNames.includes(name));
-        io.emit('availableNames', freeNames);
-    };
+    // Das hier MUSS hier stehen, damit die Namen beim Laden erscheinen:
+    const allKeys = Object.keys(bingoData); 
+    const playerNamesOnly = allKeys.filter(name => name !== "Allgemein");
+    const takenNames = Object.values(players).map(p => p.username);
+    const freeNames = playerNamesOnly.filter(name => !takenNames.includes(name));
+    socket.emit('availableNames', freeNames); 
+
+    // ... restlicher Code
+});
 
     sendAvailableNames();
 
