@@ -233,3 +233,44 @@ input {
 .rules-box strong {
     color: #a42323;
 }
+
+/* Spezielles Styling für den Beitritts-Knopf */
+#joinBtn {
+    display: block;             /* Ermöglicht das Zentrieren mit margin auto */
+    margin: 30px auto 10px auto; /* Oben 30px Platz, Mitte, unten 10px */
+    background: linear-gradient(to bottom, #d4af37, #a47a15); /* Edles Dota-Gold */
+    border: 1px solid #5e4408;
+    color: white;
+    padding: 15px 40px;
+    font-size: 1.1rem;
+    min-width: 280px;           /* Damit der Knopf eine schöne Breite hat */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+    transition: all 0.3s ease;
+}
+
+/* Zustand: "Zuerst Namen wählen" (Deaktiviert) */
+#joinBtn:disabled {
+    background: #333;           /* Neutrales Dunkelgrau */
+    border: 1px solid #222;
+    color: #777;
+    cursor: not-allowed;
+    transform: none;            /* Kein Wackeln beim Drüberfahren */
+    filter: grayscale(1);       /* Macht es komplett farblos */
+    box-shadow: none;
+}
+
+/* Zustand: "Name beitreten" (Aktiviert & Hover) */
+#joinBtn:not(:disabled):hover {
+    background: linear-gradient(to bottom, #f1c40f, #d4af37); /* Leuchtendes Gold */
+    box-shadow: 0 0 20px rgba(212, 175, 55, 0.4);
+    transform: scale(1.02);
+}
+
+/* Kleine Anpassung für den Name-Picker, damit alles mittig bleibt */
+#namePicker {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 10px;
+}
