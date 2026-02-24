@@ -3,6 +3,7 @@ let selectedName = null;
 let myUsername = "";
 let myGrid = [];
 let allPlayers = [];
+document.getElementById('joinBtn').disabled = true;
 
 // DIESE FUNKTION MUSS GANZ OBEN STEHEN
 function renderPlayerList(players, elementId) {
