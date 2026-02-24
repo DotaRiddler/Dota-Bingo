@@ -52,20 +52,6 @@ function join() {
     }
 }
 
-// 3. Hilfsfunktion für Spielerlisten
-function renderPlayerList(players, elementId) {
-    const list = document.getElementById(elementId);
-    if (!list) return;
-    list.innerHTML = "";
-    players.forEach(p => {
-        const span = document.createElement('span');
-        span.innerText = p.username;
-        span.className = "player-tag";
-        span.style.backgroundColor = p.color;
-        list.appendChild(span);
-    });
-}
-
 // 4. Spieler-Updates verarbeiten (ZENTRAL)
 socket.on('updatePlayers', (players) => {
     allPlayers = players; 
