@@ -117,30 +117,31 @@ h1, .main-title {
     align-items: center;
 }
 
-/* 4. JOIN BUTTON (Disabled Logik erzwingen) */
+/* 4. JOIN BUTTON (Erzwingt das Ausgrauen) */
 #joinBtn {
     display: block;
     margin: 20px auto;
-    background: linear-gradient(to bottom, #d4af37, #a47a15);
-    border: 1px solid #5e4408;
+    /* Standard-Farbe (Gold), wenn er AKTIVIERT ist */
+    background: linear-gradient(to bottom, #d4af37, #a47a15) !important;
+    border: 1px solid #5e4408 !important;
     min-width: 280px;
-    color: white;
+    color: white !important;
     padding: 15px;
     font-weight: bold;
-    font-family: 'Cinzel', serif;
-    text-transform: uppercase;
     cursor: pointer;
+    transition: all 0.3s;
 }
 
+/* WICHTIG: Die Kombination aus :disabled und !important */
 #joinBtn:disabled {
-    background: #222 !important;
-    background-image: none !important;
-    color: #444 !important;
+    background: #222 !important; /* Dunkelgrau */
+    background-image: none !important; /* Entfernt den Gold-Verlauf */
+    color: #555 !important; /* Dunkler Text */
     border: 1px solid #111 !important;
     cursor: not-allowed !important;
     box-shadow: none !important;
     transform: none !important;
-    opacity: 0.8;
+    opacity: 0.6;
 }
 
 #joinBtn:not(:disabled):hover {
