@@ -29,32 +29,38 @@ const bingoData = {
     "Dome": ["AFK in Pickphase", "Begriff D2", "Begriff D3", "Begriff D4", "Begriff D5", "Begriff D6"]
 };
 
+// Hilfsfunktion, um die Namen an ALLE zu senden
+function sendAvailableNamesToAll() {
+    const allKeys = Object.keys(bingoData); 
+    const playerNamesOnly = allKeys.filter(name => name !== "Allgemein");
+    const takenNames = Object.values(players).map(p => p.username);
+    const freeNames = playerNamesOnly.filter(name => !takenNames.includes(name));
+    io.emit('availableNames', freeNames);
+}
+
 io.on('connection', (socket) => {
-    console.log('Neuer User verbunden');
+    console.log('Neuer User verbunden:', socket.id);
     
-    // Das hier MUSS hier stehen, damit die Namen beim Laden erscheinen:
+    // 1. Schicke dem neuen User sofort die Namen
     const allKeys = Object.keys(bingoData); 
     const playerNamesOnly = allKeys.filter(name => name !== "Allgemein");
     const takenNames = Object.values(players).map(p => p.username);
     const freeNames = playerNamesOnly.filter(name => !takenNames.includes(name));
     socket.emit('availableNames', freeNames); 
 
-    // ... restlicher Code
-});
-
-    sendAvailableNames();
-
+    // 2. Beitritts-Logik
     socket.on('join', (name) => {
         if (bingoData[name]) {
             players[socket.id] = { 
                 username: name, 
                 color: COLORS[Object.keys(players).length % COLORS.length]
             };
-            sendAvailableNames();
+            sendAvailableNamesToAll();
             io.emit('updatePlayers', Object.values(players));
         }
     });
 
+    // 3. Spielstart
     socket.on('gameStart', () => {
         const connectedPlayers = Object.values(players);
         
@@ -83,17 +89,19 @@ io.on('connection', (socket) => {
         io.emit('startGameNow');
     });
 
-    // Hier wird das Gewinn-Paket (Name + Grid) an alle verteilt
+    // 4. Sieg-Event
     socket.on('bingo', (data) => {
         io.emit('announceWinner', data);
     });
 
+    // 5. Trennung
     socket.on('disconnect', () => {
         delete players[socket.id];
-        sendAvailableNames();
+        sendAvailableNamesToAll();
         io.emit('updatePlayers', Object.values(players));
+        console.log('User getrennt');
     });
-});
+}); // <--- Hier schließt erst die Connection-Funktion!
 
 const PORT = process.env.PORT || 3000;
 server.listen(PORT, () => console.log(`Server läuft auf Port ${PORT}`));
