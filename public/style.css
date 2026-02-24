@@ -239,16 +239,14 @@ button:hover {
     margin-left: 0;
 }
 
-/* 8. GAME LAYOUT (Sidebar & Grid Anordnung) */
-/* 8. GAME LAYOUT (Optimiert für großes Grid) */
+/* 8. GAME LAYOUT (Grid Fokus) */
 .game-container {
     display: flex;
     flex-direction: row;
     justify-content: center;
     align-items: flex-start;
-    gap: 30px;
-    width: 98%;           /* Nutzt fast die volle Breite */
-    max-width: 1400px;     /* Erlaubt ein sehr breites Layout */
+    gap: 40px;
+    width: 95%;
     margin: 20px auto;
 }
 
@@ -256,12 +254,30 @@ button:hover {
     display: grid; 
     grid-template-columns: repeat(5, 1fr); 
     grid-template-rows: repeat(5, 1fr); 
-    gap: 10px;            /* Etwas mehr Abstand zwischen den Zellen */
-    width: 100%;
-    max-width: 750px;      /* Hier ist die Größe! Von 500px auf 750px erhöht */
+    gap: 12px; 
+    /* Hier erzwingen wir die Größe */
+    width: 800px; 
+    max-width: 90vw; /* Verhindert, dass es breiter als der Bildschirm ist */
     aspect-ratio: 1 / 1;
     margin: 0;
-    flex: 2;              /* Sagt dem Browser: "Gib dem Grid doppelt so viel Platz wie der Sidebar" */
+}
+
+.cell {
+    background: rgba(30, 30, 30, 0.95);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    cursor: pointer;
+    padding: 15px;
+    /* Schriftgröße deutlich lesbarer machen */
+    font-size: 1rem; 
+    font-weight: bold;
+    color: white;
+    text-shadow: 1px 1px 3px black;
+    word-wrap: break-word;
+    border-radius: 4px;
 }
 
 #activePlayersSidebar {
@@ -269,28 +285,30 @@ button:hover {
     padding: 20px;
     border-radius: 8px;
     border-left: 3px solid #a42323;
-    width: 250px;          /* Sidebar auch ein klein wenig breiter für die Lesbarkeit */
-    flex-shrink: 0;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+    width: 250px;
+    flex-shrink: 0; /* Sidebar darf NICHT schrumpfen */
 }
 
-/* Mobile Optimierung bleibt wichtig, damit das große Grid auf dem Handy nicht abgeschnitten wird */
-@media (max-width: 1000px) { /* Etwas früher umbrechen, da das Grid jetzt breiter ist */
+#activePlayersSidebar h3 {
+    font-family: 'Cinzel', serif;
+    color: #d4af37;
+    text-transform: uppercase;
+    text-align: center;
+    margin-top: 0;
+    border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+    padding-bottom: 5px;
+}
+
+/* Mobile Optimierung: Untereinander, wenn es zu eng wird */
+@media (max-width: 1100px) {
     .game-container {
         flex-direction: column;
         align-items: center;
     }
     
     #bingoGrid {
-        max-width: 95vw;    /* Auf dem Handy fast volle Bildschirmbreite */
-    }
-
-    #activePlayersSidebar {
-        width: 100%;
-        max-width: 600px;
-        border-left: none;
-        border-top: 3px solid #a42323;
-        margin-top: 20px;
+        width: 95vw;
+        height: auto;
     }
 }
 
