@@ -43,63 +43,47 @@ io.on('connection', (socket) => {
 
     socket.on('join', (name) => {
         if (bingoData[name]) {
-            // Spieler registrieren
             players[socket.id] = { 
                 username: name, 
                 color: COLORS[Object.keys(players).length % COLORS.length]
             };
-
             sendAvailableNames();
-            // Schicke die aktuelle Spielerliste an ALLE
             io.emit('updatePlayers', Object.values(players));
         }
     });
 
-  socket.on('gameStart', () => {
+    socket.on('gameStart', () => {
         const connectedPlayers = Object.values(players);
         
         Object.keys(players).forEach(socketId => {
-            const currentPlayer = players[socketId]; // Der Besitzer dieses spezifischen Boards
+            const currentPlayer = players[socketId];
             let boardPool = [];
 
-            // 1. Begriffe von ANDEREN Spielern hinzufügen
             connectedPlayers.forEach(p => {
-                // WICHTIG: Nur hinzufügen, wenn der Name NICHT der eigene ist
                 if (p.username !== currentPlayer.username) {
                     const category = bingoData[p.username] || [];
                     const shuffledCategory = [...category].sort(() => 0.5 - Math.random());
-                    
-                    // Wir nehmen etwas mehr (z.B. 5), da wir ja einen Spieler weniger im Pool haben
                     const picked = shuffledCategory.slice(0, 5);
-                    
-                    picked.forEach(text => {
-                        boardPool.push({ text: text, color: p.color });
-                    });
+                    picked.forEach(text => boardPool.push({ text: text, color: p.color }));
                 }
             });
 
-            // 2. Rest mit "Allgemein" auffüllen
             let needed = 25 - boardPool.length;
             const generalShuffled = [...bingoData["Allgemein"]].sort(() => 0.5 - Math.random());
             const pickedGeneral = generalShuffled.slice(0, Math.max(0, needed));
+            pickedGeneral.forEach(text => boardPool.push({ text: text, color: "#444444" }));
 
-            pickedGeneral.forEach(text => {
-                boardPool.push({ text: text, color: "#444444" });
-            });
-
-            // 3. Mischen
             let finalBoard = boardPool.sort(() => 0.5 - Math.random()).slice(0, 25);
-
             io.to(socketId).emit('initGame', finalBoard);
         });
 
         io.emit('startGameNow');
     });
 
+    // Hier wird das Gewinn-Paket (Name + Grid) an alle verteilt
     socket.on('bingo', (data) => {
-    // data enthält jetzt { name: "Spielername", grid: [...] }
-    io.emit('announceWinner', data);
-});
+        io.emit('announceWinner', data);
+    });
 
     socket.on('disconnect', () => {
         delete players[socket.id];
