@@ -120,10 +120,12 @@ function renderBingoField() {
     myGrid.forEach((item, index) => {
         const cell = document.createElement('div');
         cell.className = "cell";
-        cell.innerText = item.text;
-        // Markierung setzen, falls bereits geklickt (für Reconnects nützlich)
-        if(item.clicked) cell.classList.add('marked');
         
+        // Hier greifen wir auf .text und .color zu!
+        cell.innerText = item.text; 
+        cell.style.borderBottom = `5px solid ${item.color}`; // Farblicher Streifen unten
+        
+        if(item.clicked) cell.classList.add('marked');
         cell.onclick = () => toggleCell(index, cell);
         gridElement.appendChild(cell);
     });
