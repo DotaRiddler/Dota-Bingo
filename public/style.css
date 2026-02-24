@@ -254,22 +254,13 @@ button:hover {
 /* 8. GAME LAYOUT (Sidebar & Grid Anordnung) */
 .game-container {
     display: flex;
+    flex-direction: row; /* Erzwingt Nebeneinander */
     justify-content: center;
     align-items: flex-start;
-    gap: 20px;
-    width: 100%;
-    max-width: 1000px;
-    margin: 0 auto;
-    flex-wrap: wrap; /* Sorgt dafür, dass es auf Handys untereinander springt */
-}
-
-#activePlayersSidebar {
-    background: rgba(0, 0, 0, 0.6);
-    padding: 20px;
-    border-radius: 8px;
-    border-left: 3px solid #a42323;
-    min-width: 200px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    gap: 30px;
+    width: 95%;
+    max-width: 1200px;
+    margin: 20px auto;
 }
 
 #activePlayersSidebar h3 {
@@ -282,6 +273,22 @@ button:hover {
     text-align: center;
     border-bottom: 1px solid rgba(212, 175, 55, 0.3);
     padding-bottom: 5px;
+}
+
+/* Mobile Optimierung: Wenn der Bildschirm zu schmal ist (Handy) */
+@media (max-width: 800px) {
+    .game-container {
+        flex-direction: column; /* Alles untereinander */
+        align-items: center;
+    }
+    
+    #activePlayersSidebar {
+        width: 100%;
+        max-width: 500px;
+        border-left: none; /* Roter Strich links weg... */
+        border-top: 3px solid #a42323; /* ...dafür roter Strich oben */
+        margin-top: 20px;
+    }
 }
 
 #activePlayerList {
