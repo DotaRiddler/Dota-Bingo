@@ -266,7 +266,7 @@ h1, .main-title {
     padding: 12px;
     border: 1px solid #a42323;
     border-radius: 6px;
-    max-height: 250px; /* Begrenzt den Platz für ca. 5-6 Spieler */
+    max-height: 300px; /* Begrenzt den Platz für ca. 5-6 Spieler */
     overflow-y: auto;
 }
 
@@ -368,7 +368,7 @@ h1, .main-title {
 }
 
 #gameLog {
-    height: 300px;   /* Etwas höher, da es jetzt schmaler ist */
+    height: 350px;   /* Etwas höher, da es jetzt schmaler ist */
     overflow-y: auto;
     font-size: 0.85rem;
     line-height: 1.3;
