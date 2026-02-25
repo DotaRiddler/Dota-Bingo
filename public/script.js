@@ -125,8 +125,18 @@ function checkWin() {
         [0,5,10,15,20], [1,6,11,16,21], [2,7,12,17,22], [3,8,13,18,23], [4,9,14,19,24],
         [0,6,12,18,24], [4,8,12,16,20]
     ];
-    const won = lines.some(line => line.every(index => myGrid[index] && myGrid[index].clicked));
-    if (won) {
+
+    let maxInRow = 0;
+    lines.forEach(line => {
+        const count = line.filter(index => myGrid[index] && myGrid[index].clicked).length;
+        if (count > maxInRow) maxInRow = count;
+    });
+
+    // WICHTIG: Dem Server sagen, wie weit wir sind
+    socket.emit('updateProgress', { maxInRow: maxInRow });
+
+    if (maxInRow === 5) {
+        console.log("BINGO gefunden!");
         socket.emit('bingo', { name: myUsername, grid: myGrid });
     }
 }
