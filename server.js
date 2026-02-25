@@ -49,6 +49,7 @@ io.on('connection', (socket) => {
     const freeNames = playerNamesOnly.filter(name => !takenNames.includes(name));
     socket.emit('availableNames', freeNames); 
 
+    // 1. JOIN EVENT
     socket.on('join', (name) => {
         if (bingoData[name]) {
             players[socket.id] = { 
@@ -57,8 +58,25 @@ io.on('connection', (socket) => {
             };
             sendAvailableNamesToAll();
             io.emit('updatePlayers', Object.values(players));
-        }
+        } // <-- Diese Klammer schließt das IF
+    }); // <-- Diese Klammer schließt das JOIN-Event
+
+    // 2. LOG-ACTION EVENT (Eigenständig!)
+    socket.on('logAction', (data) => {
+        // Wir suchen die Farbe des Spielers aus unserem players-Objekt
+        const player = players[socket.id];
+        const playerColor = player ? player.color : "gold";
+
+        io.emit('updateLog', {
+            name: data.name,
+            text: data.text,
+            color: playerColor // Jetzt wird die echte Dota-Farbe des Spielers genutzt!
+        });
     });
+
+    // Hier folgen dann weitere Events wie 'gameStart' oder 'disconnect'...
+});
+              
 
     socket.on('gameStart', () => {
         const connectedPlayers = Object.values(players);
