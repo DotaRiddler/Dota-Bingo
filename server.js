@@ -14,10 +14,10 @@ const COLORS = ["#e74c3c", "#3498db", "#2ecc71", "#f1c40f", "#9b59b6", "#e67e22"
 
 const bingoData = {
     "Allgemein": [
-        "Kurier stirbt", "Aegis geklaut", "Rampage", "First Blood", 
+        "Kurier stirbt", "Aegis geklaut", "Rampage für dein Team", "First Blood für dein Team", 
         "Dein Team gewinnt", "Divine Rapier", "Pause", "Russen im Spiel", "Rage Quit", 
         "Jemand rülpst", "AFK", "Buyback", "Pudge im Spiel", "Jemand schreit", "Roshan vor 25 min", "Mega Creeps vor 40 min",
-        "Toxischer Chat", "Zuschauer will Stream", "Deinen Lane Tower vor 15 min zerstört", 
+        "Toxischer Gegner Chat", "Zuschauer will Stream", "Deinen Lane Tower vor 15 min zerstört", 
         "Rax vor 30 min zerstört", "DC", "1. Tormentor vor 30 min", "Du hast 6 Kills / Assists bis 15 min", 
         "Du bist Godlike", "Du hast einen Triple Kill", "Du nimmst Aegis", "Du hast keinen Tod bis 20 min", "Du smoke ganks erfolgreich"
     ],
