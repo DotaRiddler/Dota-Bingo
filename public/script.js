@@ -119,10 +119,12 @@ function renderBingoField() {
         if (item.clicked) cell.classList.add('marked');
 
         cell.onclick = () => {
-            myGrid[index].clicked = !myGrid[index].clicked;
-            cell.classList.toggle('marked');
-            checkWin();
-        };
+        myGrid[index].clicked = !myGrid[index].clicked;
+        cell.classList.toggle('marked');
+        checkWin();
+        // DIESE ZEILE HIER NEU EINFÜGEN:
+        addLog(myUsername, "gold", `markiert: "${item.text}"`);
+    };
         gridElement.appendChild(cell);
     });
 }
@@ -174,3 +176,15 @@ socket.on('announceWinner', (data) => {
     // Wir nutzen die CSS-Klasse, um das !important im CSS zu triggern
     overlay.classList.add('active');
 });
+
+function addLog(playerName, playerColor, actionText) {
+    const logElement = document.getElementById('gameLog');
+    if (!logElement) return;
+
+    const entry = document.createElement('div');
+    entry.className = "log-entry";
+    entry.innerHTML = `<span style="color: ${playerColor}"><strong>${playerName}:</strong></span> ${actionText}`;
+
+    logElement.appendChild(entry);
+    logElement.scrollTop = logElement.scrollHeight; // Automatisches Scrollen nach unten
+}
