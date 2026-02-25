@@ -119,15 +119,16 @@ function renderBingoField() {
         if (item.clicked) cell.classList.add('marked');
 
         cell.onclick = () => {
-        myGrid[index].clicked = !myGrid[index].clicked;
-        cell.classList.toggle('marked');
-        checkWin();
-        // DIESE ZEILE HIER NEU EINFÜGEN:
-        addLog(myUsername, "gold", `markiert: "${item.text}"`);
-    };
-        gridElement.appendChild(cell);
+    myGrid[index].clicked = !myGrid[index].clicked;
+    cell.classList.toggle('marked');
+    checkWin();
+    
+    // Wir senden die Info an den Server, damit er sie an ALLE verteilt
+    socket.emit('logAction', {
+        name: myUsername,
+        text: `markiert: "${item.text}"`
     });
-}
+};
 
 function checkWin() {
     const lines = [
@@ -162,6 +163,12 @@ socket.on('announceWinner', (data) => {
         const border = item.clicked ? "1px solid gold" : "1px solid #444";
         previewHTML += `<div style="background: ${color}; color: ${textColor}; border: ${border}; font-size: 0.6rem; padding: 5px; aspect-ratio: 1/1; display: flex; align-items: center; justify-content: center; text-align: center; border-radius: 3px;">${item.text}</div>`;
     });
+
+    // Empfange Log-Nachrichten von anderen Spielern
+    socket.on('updateLog', (data) => {
+    addLog(data.name, data.color || "white", data.text);
+    });
+    
     previewHTML += `</div>`;
 
     const oldPreview = document.getElementById('winningGridPreview');
