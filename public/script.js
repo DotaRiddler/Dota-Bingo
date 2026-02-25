@@ -85,11 +85,21 @@ function updateActiveSidebar() {
     const sidebar = document.getElementById('activePlayerList');
     if (!sidebar) return;
     sidebar.innerHTML = "";
+    
     allPlayers.forEach(p => {
         const div = document.createElement('div');
-        div.className = "player-tag";
-        div.style.backgroundColor = p.color;
-        div.innerText = p.username;
+        div.className = "player-tag-container"; // Neuer Container für Name + Bar
+        
+        // Fortschritt in Prozent (0 bis 5 Felder -> 0% bis 100%)
+        const progressPercent = (p.progress || 0) * 20; 
+        const barClass = p.progress >= 4 ? "progress-bar progress-high" : "progress-bar";
+
+        div.innerHTML = `
+            <div class="player-tag" style="background-color: ${p.color}">${p.username}</div>
+            <div class="progress-container">
+                <div class="${barClass}" style="width: ${progressPercent}%"></div>
+            </div>
+        `;
         sidebar.appendChild(div);
     });
 }
