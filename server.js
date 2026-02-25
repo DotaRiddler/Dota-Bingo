@@ -19,7 +19,7 @@ const bingoData = {
         "Jemand rülpst", "AFK", "Buyback", "Pudge im Spiel", "Jemand schreit", "Roshan vor 25 min", "Mega Creeps vor 40 min",
         "Toxischer Chat", "Zuschauer will Stream", "Deinen Lane Tower vor 15 min. zerstört", 
         "Rax vor 30 min. zerstört", "DC", "1. Tormentor vor 30 min", "Du hast 6 Kills / Assists bis 15 min", 
-        "Du bist Godlike", "Du hast einen Triple Kill", "Du nimmst Aegis", "Du hast 0 Tode bis 20 min", "Du smoke ganks erfolgreich"
+        "Du bist Godlike", "Du hast einen Triple Kill", "Du nimmst Aegis", "Du hast keinen Tod bis 20 min", "Du smoke ganks erfolgreich"
     ],
     "Shockwave": ["unbekanntes Wort", "Sprichwort", "Dad joke", "wird 2x in Midlane geganked", "Lass mal smoken", "Hab Freefarm", "macht Firstblood", "feeded 3 mal vor 10. min"],
     "Schoki": ["Hiiiilfeee", "Coolio", "pick WR", "Forcestaff Mobbing", "Klaut Lasthit", "Weini, Weini", "Lasthitlilly"],
