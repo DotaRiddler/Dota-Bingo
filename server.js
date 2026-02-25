@@ -71,7 +71,13 @@ io.on('connection', (socket) => {
             color: playerColor
         });
     });
-
+    socket.on('updateProgress', (data) => {
+        if (players[socket.id]) {
+        players[socket.id].progress = data.maxInRow;
+        // Alle Spieler über den neuen Fortschritt informieren
+        io.emit('updatePlayers', Object.values(players));
+        }
+    });
     // 3. GAME START (Muss innerhalb von io.on stehen!)
     socket.on('gameStart', () => {
         const connectedPlayers = Object.values(players);
