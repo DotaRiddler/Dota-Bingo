@@ -266,7 +266,7 @@ h1, .main-title {
     padding: 12px;
     border: 1px solid #a42323;
     border-radius: 6px;
-    max-height: 300px; /* Begrenzt den Platz für ca. 5-6 Spieler */
+    max-height: 350px; /* Begrenzt den Platz für ca. 5-6 Spieler */
     overflow-y: auto;
 }
 
