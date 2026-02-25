@@ -1,3 +1,10 @@
+const { createClient } = require('@supabase/supabase-js');
+
+// Ersetze diese Werte mit deinen Daten von Supabase
+const SUPABASE_URL = 'https://ghykohhezxfjfqekutex.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_95zfkyCV5Q7DTElc9ewQ9g_q6LGVtIj';
+const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+
 const express = require('express');
 const http = require('http');
 const { Server } = require('socket.io');
@@ -106,10 +113,29 @@ io.on('connection', (socket) => {
     });
 
     // 4. BINGO EVENT
-    socket.on('bingo', (data) => {
-        io.emit('announceWinner', data);
-    });
+    socket.on('bingo', async (data) => {
+    io.emit('announceWinner', data);
 
+    // Sieg in der Datenbank speichern
+    const { data: entry, error } = await supabase
+        .from('leaderboard')
+        .select('wins')
+        .eq('username', data.name)
+        .single();
+
+    if (entry) {
+        // Spieler existiert -> Siege +1
+        await supabase
+            .from('leaderboard')
+            .update({ wins: entry.wins + 1 })
+            .eq('username', data.name);
+    } else {
+        // Neuer Spieler -> Eintrag erstellen
+        await supabase
+            .from('leaderboard')
+            .insert([{ username: data.name, wins: 1 }]);
+    }
+});
     // 5. DISCONNECT EVENT
     socket.on('disconnect', () => {
         if (players[socket.id]) {
