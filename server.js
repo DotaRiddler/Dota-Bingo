@@ -16,7 +16,7 @@ const bingoData = {
     "Allgemein": [
         "Gegner Kurier stirbt", "Gegner Aegis geklaut", "Rampage für dein Team", "First Blood für dein Team", 
         "Dein Team gewinnt", "Divine Rapier", "Pause", "Russen im Spiel", "Rage Quit", 
-        "Jemand rülpst", "AFK", "Buyback", "Pudge im Spiel", "Jemand schreit", "Roshan vor 25 min", "Mega Creeps vor 40 min",
+        "Rülpser", "AFK", "Buyback", "Pudge im Spiel", "Schreien", "Roshan vor 25 min", "Mega Creeps vor 40 min",
         "Toxischer Gegner Chat", "Zuschauer will Stream", "Deinen Lane Tower vor 15 min zerstört", 
         "Rax vor 30 min zerstört", "DC", "1. Tormentor vor 30 min", "Du hast 6 Kills / Assists bis 15 min", 
         "Du bist Godlike", "Du hast einen Triple Kill", "Du nimmst Aegis", "Du hast keinen Tod bis 20 min", "Du smoke ganks erfolgreich"
