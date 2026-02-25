@@ -353,7 +353,11 @@ h1, .main-title {
 }
 
 /* 11. INTERAKTIVES LOGBUCH */
+/* 11. INTERAKTIVES LOGBUCH */
+
+/* Der äußere Rahmen - diesen blenden wir in der Lobby aus */
 #gameLogContainer {
+    display: none; /* Standardmäßig unsichtbar */
     margin-top: 20px;
     background: rgba(10, 10, 10, 0.85);
     border: 1px solid #444;
@@ -363,16 +367,18 @@ h1, .main-title {
     padding: 10px;
 }
 
+/* Der innere Bereich, in dem die Texte fließen */
 #gameLog {
-    height: 100px;
-    overflow-y: auto;
+    height: 120px;       /* Feste Höhe für die Scrollbox */
+    overflow-y: auto;    /* Erlaubt das Scrollen */
     font-size: 0.9rem;
     color: #bbb;
     text-align: left;
     display: flex;
-    flex-direction: column; /* Nachrichten untereinander */
+    flex-direction: column; 
 }
 
+/* Die einzelnen Einträge */
 .log-entry {
     padding: 3px 0;
     border-bottom: 1px solid rgba(255,255,255,0.05);
