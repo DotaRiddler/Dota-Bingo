@@ -43,11 +43,8 @@ function sendAvailableNamesToAll() {
 io.on('connection', (socket) => {
     console.log('Neuer User verbunden:', socket.id);
     
-    const allKeys = Object.keys(bingoData); 
-    const playerNamesOnly = allKeys.filter(name => name !== "Allgemein");
-    const takenNames = Object.values(players).map(p => p.username);
-    const freeNames = playerNamesOnly.filter(name => !takenNames.includes(name));
-    socket.emit('availableNames', freeNames); 
+    // Initial verfügbare Namen schicken
+    sendAvailableNamesToAll();
 
     // 1. JOIN EVENT
     socket.on('join', (name) => {
@@ -58,31 +55,30 @@ io.on('connection', (socket) => {
             };
             sendAvailableNamesToAll();
             io.emit('updatePlayers', Object.values(players));
-        } // <-- Diese Klammer schließt das IF
-    }); // <-- Diese Klammer schließt das JOIN-Event
+            
+            // System-Log beim Beitritt
+            io.emit('updateLog', { name: "SYSTEM", text: `${name} ist beigetreten.`, color: "#777" });
+        }
+    });
 
-    // 2. LOG-ACTION EVENT (Eigenständig!)
+    // 2. LOG-ACTION EVENT
     socket.on('logAction', (data) => {
-        // Wir suchen die Farbe des Spielers aus unserem players-Objekt
         const player = players[socket.id];
         const playerColor = player ? player.color : "gold";
-
         io.emit('updateLog', {
             name: data.name,
             text: data.text,
-            color: playerColor // Jetzt wird die echte Dota-Farbe des Spielers genutzt!
+            color: playerColor
         });
     });
 
-    // Hier folgen dann weitere Events wie 'gameStart' oder 'disconnect'...
-});
-              
-
+    // 3. GAME START (Muss innerhalb von io.on stehen!)
     socket.on('gameStart', () => {
         const connectedPlayers = Object.values(players);
         Object.keys(players).forEach(socketId => {
             const currentPlayer = players[socketId];
             let boardPool = [];
+            
             connectedPlayers.forEach(p => {
                 if (p.username !== currentPlayer.username) {
                     const category = bingoData[p.username] || [];
@@ -91,27 +87,33 @@ io.on('connection', (socket) => {
                     picked.forEach(text => boardPool.push({ text: text, color: p.color }));
                 }
             });
+
             let needed = 25 - boardPool.length;
             const generalShuffled = [...bingoData["Allgemein"]].sort(() => 0.5 - Math.random());
             const pickedGeneral = generalShuffled.slice(0, Math.max(0, needed));
             pickedGeneral.forEach(text => boardPool.push({ text: text, color: "#444444" }));
+            
             let finalBoard = boardPool.sort(() => 0.5 - Math.random()).slice(0, 25);
             io.to(socketId).emit('initGame', finalBoard);
         });
         io.emit('startGameNow');
     });
 
+    // 4. BINGO EVENT
     socket.on('bingo', (data) => {
         io.emit('announceWinner', data);
     });
 
+    // 5. DISCONNECT EVENT
     socket.on('disconnect', () => {
-        delete players[socket.id];
-        sendAvailableNamesToAll();
-        io.emit('updatePlayers', Object.values(players));
-        console.log('User getrennt');
+        if (players[socket.id]) {
+            console.log(players[socket.id].username + ' getrennt');
+            delete players[socket.id];
+            sendAvailableNamesToAll();
+            io.emit('updatePlayers', Object.values(players));
+        }
     });
-}); // Diese Klammer hat gefehlt!
+}); // <--- Diese schließt sauber io.on('connection')
 
 const PORT = process.env.PORT || 3000;
 server.listen(PORT, () => console.log(`Server läuft auf Port ${PORT}`));
