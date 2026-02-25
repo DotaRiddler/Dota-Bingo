@@ -193,3 +193,23 @@ function addLog(playerName, playerColor, actionText) {
     logElement.appendChild(entry);
     logElement.scrollTop = logElement.scrollHeight;
 }
+
+// Sobald die Seite lädt, Bestenliste vom Server anfordern
+socket.emit('getLeaderboard');
+
+socket.on('updateLeaderboard', (data) => {
+    const body = document.getElementById('leaderboardBody');
+    if (!body) return;
+    body.innerHTML = "";
+
+    // Sortieren nach Siegen (höchste zuerst)
+    data.sort((a, b) => b.wins - a.wins);
+
+    data.forEach(entry => {
+        const row = `<tr>
+            <td><strong>${entry.username}</strong></td>
+            <td>${entry.wins} 🏆</td>
+        </tr>`;
+        body.innerHTML += row;
+    });
+});
