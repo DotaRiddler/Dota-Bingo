@@ -39,6 +39,16 @@ const bingoData = {
     "Spacy": ["Leise wegen Freundin", "Berlinert", "Lacht sich schlapp", "Ich hasse Sniper"]
 };
 
+socket.on('getLeaderboard', async () => {
+    const { data, error } = await supabase
+        .from('leaderboard')
+        .select('*');
+    
+    if (!error) {
+        socket.emit('updateLeaderboard', data);
+    }
+});
+
 function sendAvailableNamesToAll() {
     const allKeys = Object.keys(bingoData); 
     const playerNamesOnly = allKeys.filter(name => name !== "Allgemein");
