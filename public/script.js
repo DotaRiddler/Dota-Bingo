@@ -3,9 +3,11 @@ let selectedName = null;
 let myUsername = "";
 let myGrid = [];
 let allPlayers = [];
-document.getElementById('joinBtn').disabled = true;
 
-// DIESE FUNKTION MUSS GANZ OBEN STEHEN
+if (document.getElementById('joinBtn')) {
+    document.getElementById('joinBtn').disabled = true;
+}
+
 function renderPlayerList(players, elementId) {
     const list = document.getElementById(elementId);
     if (!list) return;
@@ -19,7 +21,6 @@ function renderPlayerList(players, elementId) {
     });
 }
 
-// 1. Namen empfangen
 socket.on('availableNames', (names) => {
     const picker = document.getElementById('namePicker');
     if (!picker) return;
@@ -40,32 +41,22 @@ socket.on('availableNames', (names) => {
     });
 });
 
-// 2. Beitreten Funktion
 function join() {
     if (selectedName) {
         myUsername = selectedName;
         socket.emit('join', selectedName);
-        
-        // UI-Wechsel in der Lobby
         document.getElementById('joinBtn').style.display = "none";
         document.getElementById('namePicker').style.display = "none";
         console.log("Joined as " + myUsername);
     }
 }
 
-// 4. Spieler-Updates verarbeiten (ZENTRAL)
 socket.on('updatePlayers', (players) => {
     allPlayers = players; 
-    
-    // Lobby-Liste aktualisieren
     renderPlayerList(players, 'playerList'); 
-    
-    // Sidebar-Liste aktualisieren (falls Spiel läuft)
     if (document.getElementById('game').style.display === "block") {
         updateActiveSidebar(); 
     }
-
-    // Host-Check für den Start-Button
     const startBtn = document.getElementById('startBtn');
     if (startBtn) {
         if (players.length > 0 && players[0].username === myUsername) {
@@ -76,17 +67,15 @@ socket.on('updatePlayers', (players) => {
     }
 });
 
-// 5. Spielstart auslösen
 function startGame() {
     socket.emit('gameStart');
 }
 
-// 6. Grid empfangen und Spiel starten
 socket.on('initGame', (finalBoard) => {
     myGrid = finalBoard.map(item => ({ ...item, clicked: false }));
-    
     document.getElementById('lobby').style.display = "none";
     document.getElementById('game').style.display = "block";
+    document.getElementById('gameLogContainer').style.display = "block";
     document.querySelector('h1').innerText = "Bingo";
     renderBingoField();
     updateActiveSidebar();
@@ -99,9 +88,18 @@ function updateActiveSidebar() {
     
     allPlayers.forEach(p => {
         const div = document.createElement('div');
-        div.className = "player-tag";
-        div.style.backgroundColor = p.color;
-        div.innerText = p.username;
+        div.className = "player-tag-container"; // Neuer Container für Name + Bar
+        
+        // Fortschritt in Prozent (0 bis 5 Felder -> 0% bis 100%)
+        const progressPercent = (p.progress || 0) * 20; 
+        const barClass = p.progress >= 4 ? "progress-bar progress-high" : "progress-bar";
+
+        div.innerHTML = `
+            <div class="player-tag" style="background-color: ${p.color}">${p.username}</div>
+            <div class="progress-container">
+                <div class="${barClass}" style="width: ${progressPercent}%"></div>
+            </div>
+        `;
         sidebar.appendChild(div);
     });
 }
@@ -122,38 +120,50 @@ function renderBingoField() {
             myGrid[index].clicked = !myGrid[index].clicked;
             cell.classList.toggle('marked');
             checkWin();
+            socket.emit('logAction', {
+                name: myUsername,
+                text: `markiert: "${item.text}"`
+            });
         };
         gridElement.appendChild(cell);
     });
-}
+} // <--- Hier war die erste fehlende Klammer!
 
 function checkWin() {
     const lines = [
-        [0,1,2,3,4], [5,6,7,8,9], [10,11,12,13,14], [15,16,17,18,19], [20,21,22,23,24], // H
-        [0,5,10,15,20], [1,6,11,16,21], [2,7,12,17,22], [3,8,13,18,23], [4,9,14,19,24], // V
-        [0,6,12,18,24], [4,8,12,16,20] // D
+        [0,1,2,3,4], [5,6,7,8,9], [10,11,12,13,14], [15,16,17,18,19], [20,21,22,23,24],
+        [0,5,10,15,20], [1,6,11,16,21], [2,7,12,17,22], [3,8,13,18,23], [4,9,14,19,24],
+        [0,6,12,18,24], [4,8,12,16,20]
     ];
 
-    const won = lines.some(line => line.every(index => myGrid[index] && myGrid[index].clicked));
+    let maxInRow = 0;
+    lines.forEach(line => {
+        const count = line.filter(index => myGrid[index] && myGrid[index].clicked).length;
+        if (count > maxInRow) maxInRow = count;
+    });
 
-    if (won) {
+    // WICHTIG: Dem Server sagen, wie weit wir sind
+    socket.emit('updateProgress', { maxInRow: maxInRow });
+
+    if (maxInRow === 5) {
         console.log("BINGO gefunden!");
         socket.emit('bingo', { name: myUsername, grid: myGrid });
     }
 }
 
-// 7. Sieges-Nachricht empfangen
+// Log-Empfänger (JETZT AN DER RICHTIGEN STELLE)
+socket.on('updateLog', (data) => {
+    addLog(data.name, data.color || "white", data.text);
+});
+
 socket.on('announceWinner', (data) => {
     const overlay = document.getElementById('winnerOverlay');
     const nameDisplay = document.getElementById('winnerNameDisplay');
-    
     if (!overlay || !nameDisplay) return;
 
     nameDisplay.innerText = `${data.name} hat BINGO!`;
     
-    // Sieger-Grid Preview erstellen
     let previewHTML = `<div id="winningGridPreview" style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 5px; margin: 20px auto; max-width: 300px;">`;
-    
     data.grid.forEach(item => {
         const color = item.clicked ? "rgba(164, 35, 35, 0.9)" : "#333";
         const textColor = item.clicked ? "white" : "#777";
@@ -171,6 +181,35 @@ socket.on('announceWinner', (data) => {
     tempDiv.innerHTML = previewHTML;
     content.insertBefore(tempDiv.firstChild, button);
 
-    // Wir nutzen die CSS-Klasse, um das !important im CSS zu triggern
     overlay.classList.add('active');
+});
+
+function addLog(playerName, playerColor, actionText) {
+    const logElement = document.getElementById('gameLog');
+    if (!logElement) return;
+    const entry = document.createElement('div');
+    entry.className = "log-entry";
+    entry.innerHTML = `<span style="color: ${playerColor}"><strong>${playerName}:</strong></span> ${actionText}`;
+    logElement.appendChild(entry);
+    logElement.scrollTop = logElement.scrollHeight;
+}
+
+// Sobald die Seite lädt, Bestenliste vom Server anfordern
+socket.emit('getLeaderboard');
+
+socket.on('updateLeaderboard', (data) => {
+    const body = document.getElementById('leaderboardBody');
+    if (!body) return;
+    body.innerHTML = "";
+
+    // Sortieren nach Siegen (höchste zuerst)
+    data.sort((a, b) => b.wins - a.wins);
+
+    data.forEach(entry => {
+        const row = `<tr>
+            <td><strong>${entry.username}</strong></td>
+            <td>${entry.wins} 🏆</td>
+        </tr>`;
+        body.innerHTML += row;
+    });
 });
