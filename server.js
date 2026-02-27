@@ -41,7 +41,7 @@ const bingoData = {
     "Barid": ["pick Rubick", "Ausraster", "was ist das für ne Scheiße", "Dagon", "erzählt von Kacke", 
               "besoffen", "traurig weil kein Rubick", "mit Jerry streiten"],
     "Dome": ["AFK beim Pick", "full Mute", "Snippy Pippy", "HA HA", "Meteor Hammer"],
-    "Johnny": ["Wild", "Lass mal was machen", "Rettet Teammate und stirbt", "kann nicht TP", "Ich bin ready"]
+    "Johnny": ["Wild", "Lass mal was machen", "Rettet Teammate und stirbt", "kann nicht TP", "Ich bin ready"],
     "Noctex": ["Pick mir Arcana Held", "Braucht wer Skin XY"],
     "Spacy": ["Leise wegen Freundin", "Berlinert", "Lacht sich schlapp", "Ich hasse Sniper"]    
 };
