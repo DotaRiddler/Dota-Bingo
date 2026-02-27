@@ -26,17 +26,24 @@ const bingoData = {
         "Rülpser", "AFK", "Buyback", "Pudge im Spiel", "Schreien", "Roshan vor 25 min", "Mega Creeps vor 40 min",
         "Toxischer Gegner Chat", "Zuschauer will Stream", "Deinen Lane Tower vor 15 min zerstört", 
         "Rax vor 30 min zerstört", "DC", "1. Tormentor vor 30 min", "Du hast 6 Kills / Assists bis 15 min", 
-        "Du bist Godlike", "Du hast einen Triple Kill", "Du nimmst Aegis", "Du hast keinen Tod bis 20 min", "Du smoke ganks erfolgreich"
+        "Du bist Godlike", "Du hast einen Triple Kill", "Du nimmst Aegis", "Du hast keinen Tod bis 20 min", 
+        "2 gleiche Aura items", 
+        "Du smoke ganks erfolgreich", "Gegner Wisdom geklaut", "Ulti ins nichts", "Midas auf Support", "Keiner hat Dust für Kill", "Neutrals Deny"
     ],
-    "Shockwave": ["unbekanntes Wort", "Sprichwort", "Dad joke", "wird 2x in Midlane geganked", "Lass mal smoken", "Hab Freefarm", "macht Firstblood", "feeded 3 mal vor 10. min"],
-    "Schoki": ["Hiiiilfeee", "Coolio", "pick WR", "Forcestaff Mobbing", "Klaut Lasthit", "Weini, Weini", "Lasthitlilly"],
-    "Jerrylarry": ["I blame Klausi", "Lob an Schocki", "miau", "Klausi Alarm", "spielt Rolli Boy", "Skill issue", "Klausiiii", "Das ist bodenlos"],
+    "Shockwave": ["unbekanntes Wort", "Sprichwort", "Dad joke", "wird 2x in Midlane geganked", 
+                  "Lass mal smoken", "Hab Freefarm", "macht Firstblood", "feeded 3 mal vor 10. min"],
+    "Schoki": ["Hiiiilfeee", "Coolio", "pick WR", "Forcestaff Mobbing", "Klaut Lasthit", "Weini, Weini",
+               "Lasthitlilly", "Rettet Teammate und stirbt", "Lobt sich selbst"],
+    "Jerrylarry": ["I blame Klausi", "Lob an Schocki", "miau", "Sauerkraut gegessen", "Klausi Alarm", "spielt Rolli Boy", 
+                   "Skill issue", "Klausiiii", "Das ist bodenlos", "Chamoy", "Lacht über sich selbst"],
     "Nobody": ["Ich kann nicht mehr", "ey Leude", "pick Techies", "pick AM", "wiederholt Witz", "Smurfed"],
-    "Brezel": ["Was soll ich bauen", "Neiiiin", "meeeh hab Angst", "ist verwirrt", "pick Snapfire", "Isst etwas"],
-    "Barid": ["pick Rubick", "Ausraster", "was ist das für ne Scheiße", "Dagon", "erzählt von Kacke", "besoffen", "traurig weil kein Rubick", "mit Jerry streiten"],
+    "Brezel": ["Was soll ich bauen", "Neiiiin", "meeeh hab Angst", "ist verwirrt", "pick Snapfire", "Isst etwas", "Rettet Teammate und stirbt"],
+    "Barid": ["pick Rubick", "Ausraster", "was ist das für ne Scheiße", "Dagon", "erzählt von Kacke", 
+              "besoffen", "traurig weil kein Rubick", "mit Jerry streiten"],
     "Dome": ["AFK beim Pick", "full Mute", "Snippy Pippy", "HA HA", "Meteor Hammer"],
+    "Johnny": ["Wild", "Lass mal was machen", "Rettet Teammate und stirbt", "kann nicht TP", "Ich bin ready"]
     "Noctex": ["Pick mir Arcana Held", "Braucht wer Skin XY"],
-    "Spacy": ["Leise wegen Freundin", "Berlinert", "Lacht sich schlapp", "Ich hasse Sniper"]
+    "Spacy": ["Leise wegen Freundin", "Berlinert", "Lacht sich schlapp", "Ich hasse Sniper"]    
 };
 
 function sendAvailableNamesToAll() {
