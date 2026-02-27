@@ -70,7 +70,7 @@ io.on('connection', (socket) => {
 
     socket.on('getLeaderboard', async () => {
         const { data, error } = await supabase
-        .from('leaderboard')
+        .from('Leaderboard')
         .select('*');
     
         if (!error) {
@@ -128,7 +128,7 @@ io.on('connection', (socket) => {
 
     // Sieg in der Datenbank speichern
     const { data: entry, error } = await supabase
-        .from('leaderboard')
+        .from('Leaderboard')
         .select('wins')
         .eq('username', data.name)
         .single();
@@ -136,13 +136,13 @@ io.on('connection', (socket) => {
     if (entry) {
         // Spieler existiert -> Siege +1
         await supabase
-            .from('leaderboard')
+            .from('Leaderboard')
             .update({ wins: entry.wins + 1 })
             .eq('username', data.name);
     } else {
         // Neuer Spieler -> Eintrag erstellen
         await supabase
-            .from('leaderboard')
+            .from('Leaderboard')
             .insert([{ username: data.name, wins: 1 }]);
     }
 });
